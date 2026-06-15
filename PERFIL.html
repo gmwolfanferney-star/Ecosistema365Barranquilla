@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Profesional - Elisabeth Cristina Castillo Carvajal</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #002e20 0%, #004d36 100%);
+            --accent: #00c997;
+            --surface: rgba(255, 255, 255, 0.08);
+            --texto: #ffffff;
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--texto);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            margin-bottom: 50px;
+        }
+
+        .header-profile-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 45px;
+            text-align: left;
+        }
+
+        .header-text-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header-photo-column {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-profile-container {
+                flex-direction: column-reverse;
+                text-align: center;
+                align-items: center;
+                gap: 25px;
+            }
+
+            .header-text-column {
+                align-items: center;
+            }
+        }
+
+        /* Estilo para el logo institucional */
+        .sena-logo-container {
+            margin-bottom: 20px;
+        }
+
+        .sena-logo {
+            width: 340px;
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            filter: brightness(0.8) contrast(200%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sena-logo:hover {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .sena-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: -30px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            left: 15px;
+        }
+
+        .sena-subtitle {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--texto);
+            opacity: 0.85;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            left: 15px;
+        }
+
+        /* Estilo para tu foto */
+        .profile-img {
+            width: 240px;
+            height: 336px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 4px solid var(--accent);
+            margin: 20px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            border-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .header-section h1 {
+            font-size: 2.2rem;
+            color: var(--texto);
+            margin: 0;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .profile-summary-card {
+            grid-column: 1 / -1;
+            text-align: justify;
+        }
+
+        .profile-summary-card p {
+            margin-bottom: 15px;
+        }
+
+        .profile-summary-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        .pdf-btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+            grid-column: 1 / -1;
+        }
+
+        .premium-pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #00c997, #007a55);
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 201, 151, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .premium-pdf-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 201, 151, 0.5);
+            background: linear-gradient(135deg, #00dba5, #008f63);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .premium-pdf-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s;
+        }
+
+        .premium-pdf-btn:hover .btn-icon {
+            transform: rotate(-10deg) scale(1.15);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="header-section">
+            <div class="header-profile-container">
+                <div class="header-text-column">
+                    <div class="sena-logo-container">
+                        <img src="sena.png" alt="Logo SENA" class="sena-logo">
+                        <div class="sena-title">Centro de Gestión Administrativa</div>
+                        <div class="sena-subtitle">Regional Distrito Capital</div>
+                    </div>
+                    <h1>Elisabeth Cristina Castillo Carvajal</h1>
+                    <p style="font-size: 1.3rem;">Psicóloga | Especialista en Gestión Humana de las Organizaciones |
+                        Máster en Gamificación</p>
+                </div>
+                <div class="header-photo-column">
+                    <img src="elisa.jpeg" alt="Elisabeth Cristina Castillo Carvajal" class="profile-img">
+                </div>
+            </div>
+        </section>
+
+        <div class="profile-grid">
+            <article class="card profile-summary-card">
+                <h3>Perfil</h3>
+                <p>Soy una profesional comprometida con la formación integral y el bienestar humano, con una sólida
+                    trayectoria de 19 años de servicio ininterrumpido en el SENA. Mi evolución profesional me ha
+                    permitido consolidar una visión profunda del ecosistema educativo, transitando desde áreas
+                    estratégicas como Bienestar al Aprendiz hasta mi consolidada labor como instructora.</p>
+                <p>A lo largo de mi carrera, he integrado mis conocimientos en Psicología y Gestión Humana con
+                    metodologías pedagógicas de vanguardia. Me especializo en transformar entornos de aprendizaje
+                    mediante la gamificación, diseñando experiencias educativas que no solo transmiten conocimiento
+                    técnico, sino que potencian el desarrollo de habilidades blandas y el compromiso del aprendiz. Mi
+                    gestión se centra en humanizar la formación técnica, asegurando que el proceso educativo esté
+                    alineado con el bienestar integral y las necesidades del sector productivo.</p>
+            </article>
+
+            <article class="card">
+                <h3>Trayectoria Institucional</h3>
+                <p>19 años de vinculación ininterrumpida con el SENA. Mi experiencia abarca 5 años dedicados al
+                    fortalecimiento del Bienestar al Aprendiz y más de 14 años ejerciendo como instructora, lo que me
+                    permite comprender la formación desde una perspectiva holística.</p>
+            </article>
+
+            <article class="card">
+                <h3>Experticia Técnica</h3>
+                <p>Especialista en Gestión Humana de las Organizaciones con formación base en Psicología. Poseo un
+                    enfoque aplicado en la gestión del talento, el acompañamiento integral y la resolución de dinámicas
+                    organizacionales en entornos educativos.</p>
+            </article>
+
+            <article class="card">
+                <h3>Enfoque Pedagógico</h3>
+                <p>Máster en Gamificación, enfocada en aplicar estrategias lúdicas y dinámicas para optimizar la
+                    retención, la motivación y la participación activa de los aprendices, elevando la calidad pedagógica
+                    en los programas de formación.</p>
+            </article>
+
+            <div class="pdf-btn-container">
+                <a href="perfil profesional Elisa.pdf" target="_blank" rel="noopener noreferrer"
+                    class="premium-pdf-btn">
+                    <span class="btn-icon">📄</span> Ver Perfil Profesional
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

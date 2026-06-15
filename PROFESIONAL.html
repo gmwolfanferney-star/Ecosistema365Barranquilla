@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Profesional - Wolfan Ferney Guevara Monrroy</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #002e20 0%, #004d36 100%);
+            --accent: #00c997;
+            --surface: rgba(255, 255, 255, 0.08);
+            --texto: #ffffff;
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--texto);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            margin-bottom: 50px;
+        }
+
+        .header-profile-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 45px;
+            text-align: left;
+        }
+
+        .header-text-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header-photo-column {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-profile-container {
+                flex-direction: column-reverse;
+                text-align: center;
+                align-items: center;
+                gap: 25px;
+            }
+
+            .header-text-column {
+                align-items: center;
+            }
+        }
+
+        /* Estilo para el logo institucional */
+        .sena-logo-container {
+            margin-bottom: 20px;
+        }
+
+        .sena-logo {
+            width: 340px;
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            filter: brightness(0.8) contrast(200%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sena-logo:hover {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .sena-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: -30px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            left: 15px;
+        }
+
+        .sena-subtitle {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--texto);
+            opacity: 0.85;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            left: 15px;
+        }
+
+        /* Estilo para tu foto */
+        .profile-img {
+            width: 240px;
+            height: 336px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 4px solid var(--accent);
+            margin: 20px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            border-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .header-section h1 {
+            font-size: 2.2rem;
+            color: var(--texto);
+            margin: 0;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .profile-summary-card {
+            grid-column: 1 / -1;
+            text-align: justify;
+        }
+
+        .profile-summary-card p {
+            margin-bottom: 15px;
+        }
+
+        .profile-summary-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        .pdf-btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+            grid-column: 1 / -1;
+        }
+
+        .premium-pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #00c997, #007a55);
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 201, 151, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .premium-pdf-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 201, 151, 0.5);
+            background: linear-gradient(135deg, #00dba5, #008f63);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .premium-pdf-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s;
+        }
+
+        .premium-pdf-btn:hover .btn-icon {
+            transform: rotate(-10deg) scale(1.15);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="header-section">
+            <div class="header-profile-container">
+                <div class="header-text-column">
+                    <div class="sena-logo-container">
+                        <img src="sena.png" alt="Logo SENA" class="sena-logo">
+                        <div class="sena-title">Centro de Gestión Administrativa</div>
+                        <div class="sena-subtitle">Regional Distrito Capital</div>
+                    </div>
+                    <h1>Wolfan Ferney Guevara Monrroy</h1>
+                    <p style="font-size: 1.3rem;">Ingeniero Electrónico | Magíster en Telecomunicaciones y Regulación
+                        TIC</p>
+                </div>
+                <div class="header-photo-column">
+                    <img src="ferney.png" alt="Wolfan Ferney Guevara Monrroy" class="profile-img">
+                </div>
+            </div>
+        </section>
+
+        <div class="profile-grid">
+            <article class="card profile-summary-card">
+                <h3>Perfil</h3>
+                <p>Soy un profesional con más de 30 años de compromiso ininterrumpido con la formación técnica en el
+                    SENA. Mi trayectoria comenzó en 1996, permitiéndome evolucionar desde áreas operativas como auxiliar
+                    y técnico de sistemas hasta mi actual rol como Instructor Grado 20 en el Centro de Gestión
+                    Administrativa, específicamente en la Coordinación de Talento Humano.</p>
+                <p>A lo largo de mi carrera, he consolidado una visión integral que fusiona la ingeniería Electrónica y
+                    la aplicación de diferentes áreas de la sistematización de la información con la pedagogía enfocada
+                    en la formación de nuestros aprendices. Me especializo en la Edumática en la Formación, integrando
+                    herramientas tecnológicas de vanguardia para optimizar los procesos de enseñanza-aprendizaje y
+                    elevar el estándar en la formación de tecnólogos y Técnicos del Centro de Formación. Mi gestión se
+                    centra en transformar el conocimiento técnico en competencias clave para el sector productivo,
+                    siempre bajo los principios de innovación, calidad y pertinencia.</p>
+            </article>
+
+            <article class="card">
+                <h3>Trayectoria Institucional</h3>
+                <p>Vinculado al SENA desde enero de 1996, con una evolución profesional continua desde cargos de nivel
+                    técnico y operativo hasta el nivel de instructor de planta.</p>
+            </article>
+
+            <article class="card">
+                <h3>Experticia Técnica</h3>
+                <p>Especialista en Telecomunicaciones y Regulación TIC, con un enfoque aplicado en la implementación de
+                    soluciones tecnológicas para el ámbito educativo.</p>
+            </article>
+
+            <article class="card">
+                <h3>Enfoque Pedagógico</h3>
+                <p>Líder en la aplicación de la Edumática en la formación, combinando metodologías de gestión del
+                    talento humano con herramientas de automatización e Inteligencia Artificial.</p>
+            </article>
+
+            <div class="pdf-btn-container">
+                <a href="Perfil Profesional.pdf" target="_blank" rel="noopener noreferrer" class="premium-pdf-btn">
+                    <span class="btn-icon">📄</span> Ver Perfil Profesional
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

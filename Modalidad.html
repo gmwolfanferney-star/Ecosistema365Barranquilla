@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Institucional - Selección de Modalidad de Trabajo</title>
+    <!-- Librería externa para exportación limpia a PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #C8D6BC;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            /* Centra los elementos verticalmente en la pantalla */
+        }
+
+        .logo-placeholder {
+            background-color: #39A900;
+            color: white;
+            padding: 10px 25px;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 8px;
+            /* Espacio vertical muy reducido */
+            width: fit-content;
+        }
+
+        .btn-principal {
+            background-color: #39A900;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            width: fit-content;
+        }
+
+        .btn-principal:hover {
+            background-color: #2c8200;
+        }
+
+        .btn-descarga {
+            background-color: #0078d4;
+            margin: 10px;
+        }
+
+        .btn-descarga:hover {
+            background-color: #005a9e;
+        }
+
+        .btn-reinicio {
+            background-color: #7a7a7a;
+            margin: 10px;
+        }
+
+        .btn-reinicio:hover {
+            background-color: #555555;
+        }
+
+        .contenedor-quiz {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            max-width: 750px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Estilos de las Tablas del Checklist */
+        .tabla-seccion {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .tabla-seccion th,
+        .tabla-seccion td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .tabla-seccion th {
+            background-color: #f4f4f4;
+            color: #111;
+        }
+
+        .col-check {
+            text-align: center;
+            width: 60px;
+        }
+
+        .col-check input {
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .titulo-bloque {
+            background-color: #2c8200;
+            color: white;
+            padding: 6px 10px;
+            font-size: 15px;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+        }
+
+        /* Estilos Estructurados para el PDF */
+        #reporte-pdf {
+            display: none;
+            background: white;
+            padding: 10px;
+            color: #222;
+        }
+
+        .pdf-header {
+            border-bottom: 3px solid #39A900;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .resultado-box {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            border-left: 5px solid #39A900;
+        }
+
+        .item-justificado {
+            page-break-inside: avoid;
+            margin-bottom: 15px;
+            font-size: 13.5px;
+        }
+
+        .box-sustentacion {
+            background-color: #f9f9f9;
+            padding: 8px 12px;
+            border-left: 3px solid #0078d4;
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: #444;
+            font-style: italic;
+        }
+
+        .contenedor-campos-inicio {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 320px;
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .campo-grupo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .campo-grupo label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .campo-grupo input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .campo-grupo input:focus {
+            border-color: #39A900;
+            box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Los únicos dos elementos visibles inicialmente, juntos y centrados -->
+    <div id="cabezoteEvaluacion" class="logo-placeholder">SISTEMA DE EVALUACIÓN MODALIDAD</div>
+
+    <div id="contenedorCamposInicio" class="contenedor-campos-inicio">
+        <div class="campo-grupo">
+            <label for="inputCargo">Cargo</label>
+            <input type="text" id="inputCargo" placeholder="Escriba el cargo aquí...">
+        </div>
+        <div class="campo-grupo">
+            <label for="inputArea">Área</label>
+            <input type="text" id="inputArea" placeholder="Escriba el área aquí...">
+        </div>
+    </div>
+
+    <button id="btnHabilitar" class="btn-principal" onclick="validarEIniciar()">Habilitar Checklist</button>
+
+    <!-- Contenedor Principal del Cuestionario y Resultados (Ocultos al inicio) -->
+    <div id="mainContainer" class="contenedor-quiz" style="display: none;">
+        <form id="checklistForm">
+            <div id="tablasPreguntasContenedor"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="button" class="btn-principal" onclick="procesarMatrizResultados()">Finalizar y Procesar
+                    Modalidad</button>
+            </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <button id="btnDescargarPDF" class="btn-principal btn-descarga" style="display: none;"
+                onclick="exportarAPDF()">💾 Descargar Reporte Justificado (PDF)</button>
+            <button id="btnReiniciar" class="btn-principal btn-reinicio" style="display: none;"
+                onclick="reiniciarEvaluacion()">🔄 Evaluar otra labor</button>
+        </div>
+
+        <!-- Área de Renderizado del Informe Final para el PDF -->
+        <div id="reporte-pdf">
+            <div class="pdf-header">
+                <h2 style="margin: 0 0 5px 0; font-size: 20px; color: #111;">CHECKLIST DE SELECCIÓN DE MODALIDAD CON
+                    JUSTIFICACIÓN TÉCNICA LEGAL</h2>
+                <p style="margin: 0; font-size: 12px; color: #555;">Sustentación armada con base en el compendio
+                    normativo nacional v3.0</p>
+            </div>
+            <div id="resultadosContenedor"></div>
+        </div>
+    </div>
+
+    <script>
+        // Banco de datos con argumentos de justificación basados en la normatividad colombiana vigente (v3.0 Extendida)
+        const estructuraChecklist = [
+            {
+                bloque: "A",
+                titulo: "A. NATURALEZA DE LA LABOR",
+                preguntas: [
+                    { id: 1, texto: "La labor puede definirse en tareas y entregables claros", si: "Cumple con el criterio de organización laboral por entregables, facilitando la flexibilización de tiempos de ejecución según el Art. 11 de la Ley 2466 de 2025.", no: "La falta de tareas estructuradas impide la medición objetiva del rendimiento convencional, contraviniendo el Art. 6 (numeral 2) de la Ley 1221 de 2008." },
+                    { id: 2, texto: "El resultado es verificable mediante evidencia objetiva", si: "Alineado con el Art. 2.2.1.5.8 del Decreto 1072 de 2015 (modificado por Dec. 1227 de 2022), permitiendo el cumplimiento de metas mediante reportes e informes verificables.", no: "Dificulta la verificación obligatoria de resultados y metas de calidad exigidas por el Art. 2.2.1.5.8 del Decreto 1072 de 2015." },
+                    { id: 3, texto: "Se orienta a resultados más que a presencia física", si: "Se fundamenta en la autonomía de ejecución sin requerir presencia en un sitio específico, principio base del Teletrabajo según el Art. 2 de la Ley 1221 de 2008.", no: "La labor exige subordinación presencial continua en cuanto al tiempo y modo, de acuerdo con el Art. 16 de la Ley 2466 de 2025." },
+                    { id: 4, texto: "Puede dividirse en actividades planificadas", si: "Permite la distribución variable de la jornada y la concertación de esquemas de cumplimiento según el Art. 2.2.1.5.17 del Decreto 1072 de 2015.", no: "Corresponde a actividades reactivas o de fuerza mayor/caso fortuito contempladas como excepciones de disponibilidad en el Art. 6 de la Ley 2191 de 2022." },
+                    { id: 5, texto: "Tiene inicio y fin definidos", si: "Facilita la delimitación de la jornada máxima legal y el control del tiempo suplementario de conformidad con el Art. 11 de la Ley 2466 de 2025.", no: "Su naturaleza indefinida o de atención continua dificulta trazar la frontera de la jornada ordinaria según el Art. 11 de la Ley 2466 de 2025." },
+                    { id: 6, texto: "Puede programarse con fechas límite", si: "Idóneo para acordar tiempos de entrega y metas específicas según el modelo de flexibilidad del Art. 2.2.1.5.17 del Decreto 1072 de 2015.", no: "La volatilidad operativa impide la fijación de cronogramas estables, requiriendo disponibilidad presencial ordinaria (Art. 11, Ley 2466 de 2025)." }
+                ]
+            },
+            {
+                bloque: "B",
+                titulo: "B. NECESIDAD DE PRESENCIALIDAD",
+                preguntas: [
+                    { id: 7, texto: "Requiere contacto físico directo con personas", si: "Exige interacción presencial obligatoria con ciudadanos o usuarios, lo que inhabilita la deslocalización por soporte TIC (Art. 2, Ley 1221 de 2008).", no: "La interacción con terceros puede surtirse mediante canales digitales unificados y herramientas de comunicación virtual (Art. 2.2.1.5.18, Dec. 1072 de 2015)." },
+                    { id: 8, texto: "Exige uso permanente de infraestructura física", si: "Depende estrictamente de instalaciones, laboratorios o equipos locales de la sede organizacional, haciendo obligatoria la presencialidad.", no: "Las herramientas operativas son reproducibles extra-sede o accesibles mediante repositorios virtuales en la nube (Art. 2.2.1.5.18, Dec. 1072 de 2015)." },
+                    { id: 9, texto: "Depende de documentos físicos no digitalizados", si: "Requiere la manipulación directa de archivos o correspondencia física custodiada en los locales institucionales, impidiendo el entorno a distancia.", no: "Los insumos de información se encuentran digitalizados y dispuestos en plataformas accesibles por red (Art. 2.2.1.5.18, Dec. 1072 de 2015)." },
+                    { id: 10, texto: "Requiere atención presencial constante", si: "El puesto físico de trabajo debe ser cubierto obligatoriamente para garantizar el giro ordinario del servicio presencial institucional.", no: "La atención puede gestionarse de manera asincrónica o mediante flujos virtuales, habilitando los modelos a distancia (Art. 2.2.1.5.22, Dec. 1072 de 2015)." },
+                    { id: 11, texto: "La calidad se ve afectada sin presencialidad", si: "El valor técnico o impacto misional de la actividad disminuye críticamente si se ejecuta fuera del entorno controlado de la sede.", no: "Los estándares de calidad y oportunidad se mantienen intactos mediante el uso y apropiación de las TIC (Art. 2.2.1.5.8, Dec. 1072 de 2015)." }
+                ]
+            },
+            {
+                bloque: "C",
+                titulo: "C. VIABILIDAD TECNOLÓGICA",
+                preguntas: [
+                    { id: 12, texto: "Puede realizarse completamente con herramientas digitales", si: "Cumple la definición técnica de Teletrabajo al usar el ecosistema digital como medio y fin (Art. 2, Ley 1221 de 2008 y Art. 9, Ley 2466 de 2025).", no: "Existen fases de ejecución análogas o mecánicas que rompen la continuidad digital del proceso en entornos extra-sede." },
+                    { id: 13, texto: "La información está digitalizada", si: "Habilita la disposición inmediata de datos compartidos bajo los roles de seguridad de la organización (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Exige una intervención previa de gestión documental para digitalizar los flujos de información institucional requeridos." },
+                    { id: 14, texto: "Existe seguimiento digital del avance", si: "Viable para el control operativo mediante tableros dinámicos o sistemas de información interoperables (Art. 2.2.1.5.23, Dec. 1072 de 2015).", no: "El control depende de la revisión visual o de minutas de presencia física en la sede, careciendo de trazabilidad en la nube." },
+                    { id: 15, texto: "La comunicación puede ser virtual", si: "Las coordinaciones ordinarias se cubren mediante canales, chats y reuniones virtuales según la política interna (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "La complejidad o reserva de los comités exige una interacción corporal y presencial tradicional en las salas del centro." },
+                    { id: 16, texto: "Puede gestionarse en plataformas (ej. Planner, Teams)", si: "Se integra plenamente a los sistemas automatizados de supervisión y herramientas TIC corporativas (Art. 29, Ley 2466 de 2025 y Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Requiere software especializado local con restricciones de red que impiden su uso fuera del perímetro físico institucional." }
+                ]
+            },
+            {
+                bloque: "D",
+                titulo: "D. INTERACCIÓN Y COORDINACIÓN",
+                preguntas: [
+                    { id: 17, texto: "Requiere reuniones presenciales frecuentes", si: "La alineación del proceso exige la presencia física de los miembros del equipo en comités técnicos obligatorios.", no: "Las mesas de trabajo pueden realizarse óptimamente por videoconferencias, eliminando gastos de movilidad (Art. 10, Dec. 884 de 2012)." },
+                    { id: 18, texto: "Permite alternancia presencial–virtual", si: "Idóneo para el desarrollo de Modelos Híbridos de Trabajo, laborando de 2 a 3 días en casa y el resto en sede (Art. 2.2.1.5.22, Dec. 1072 de 2015).", no: "La labor es indivisible; exige un esquema rígido 100% presencial o 100% virtual para no romper el flujo del proceso." },
+                    { id: 19, texto: "La coordinación puede ser virtual", si: "El canal de comunicación unificado centraliza las directrices de la alta dirección sin generar fugas de información (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "La distribución de las tareas operativas requiere de un esquema de mando físico y presencial continuo directo." },
+                    { id: 20, texto: "Permite retroalimentación asincrónica", si: "Los usuarios pueden consignar comentarios y revisiones en los repositorios virtuales sin coincidir en el mismo horario (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Las decisiones exigen una validación en tiempo real y síncrona para evitar errores de producción o caídas del servicio." }
+                ]
+            },
+            {
+                bloque: "E",
+                titulo: "E. CONTROL Y SUPERVISIÓN",
+                preguntas: [
+                    { id: 21, texto: "Puede evaluarse sin supervisión constante", si: "Promueve el principio de autogestión y cumplimiento de metas del teletrabajador dependiente (Art. 2.2.1.5.8, Dec. 1072 de 2015).", no: "Exige el acompañamiento físico y la validación minuciosa del supervisor en cada etapa operativa local." },
+                    { id: 22, texto: "Permite autogestión", si: "El profesional cuenta con capacidades organizacionales y de gestión del tiempo para el trabajo a distancia (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "La asignación depende de un flujo de instrucciones diarias externas que impiden la autonomía del colaborador fuera de la sede." },
+                    { id: 23, texto: "Los avances son visibles en herramientas digitales", si: "Trazable bajo los sistemas automatizados de supervisión y control del tiempo efectivo de servicio (Art. 29, Ley 2466 de 2025).", no: "No existen tableros activos digitales, ocultando el estado real de la labor hasta su entrega final en ventanilla." },
+                    { id: 24, texto: "Se identifican retrasos objetivamente", si: "El sistema digital de tareas resalta de forma transparente las desviaciones frente a las fechas límite pactadas (Art. 2.2.1.5.17, Dec. 1072 de 2015).", no: "La detección de desvíos es subjetiva y extemporánea, requiriendo auditorías manuales presenciales dentro del centro." },
+                    { id: 25, texto: "El control es por cumplimiento de resultados", si: "Sustituye el control minutero de horario por una evaluación técnica orientada a entregables unificados (Art. 2.2.1.5.17, Dec. 1072 de 2015).", no: "La disponibilidad horaria exacta y la permanencia física en la sede son factores críticos y obligatorios para el servicio." }
+                ]
+            },
+            {
+                bloque: "F",
+                titulo: "F. SEGURIDAD Y SALUD EN EL TRABAJO (SST)",
+                preguntas: [
+                    { id: 26, texto: "Es posible evaluar riesgos laborales en modalidad remota", si: "El empleador puede realizar la verificación virtual de las condiciones de higiene con asesoría de la ARL (Art. 2.2.1.6.6.4, Dec. 1072 de 2015).", no: "Las restricciones físicas locativas externas impiden una evaluación remota de riesgos certera por el SG-SST." },
+                    { id: 27, texto: "El entorno permite condiciones ergonómicas adecuadas", si: "Cumple con los requisitos mínimos del puesto de trabajo en aspectos ergonómicos regulados por el Art. 2.2.1.5.3 del Decreto 1072 de 2015.", no: "El espacio externo presenta restricciones locativas fijas que elevan el riesgo biomecánico del trabajador (Art. 2.2.1.5.8, Dec. 1072 de 2015)." },
+                    { id: 28, texto: "No se incrementan riesgos laborales fuera de sede", si: "La ejecución de tareas de oficina mantiene un perfil de riesgo bajo en entornos residenciales controlados (Art. 2.2.1.6.6.4, Dec. 1072 de 2015).", no: "La labor manipula insumos o herramientas físicas que elevan el riesgo de accidente fuera del entorno industrial de la sede." },
+                    { id: 29, texto: "Existe posibilidad de seguimiento por SG-SST", si: "Viable incluir el puesto remoto en la metodología de identificación de peligros y plan anual del SG-SST (Art. 2.2.1.6.6.4, Dec. 1072 de 2015).", no: "La dispersión geográfica o las tareas móviles impiden un seguimiento de prevención efectivo por el COPASST (Art. 2.2.1.5.8, Dec. 1072 de 2015)." },
+                    { id: 30, texto: "La actividad cumple lineamientos de prevención de riesgos laborales", si: "Se integra a las capacitaciones previas obligatorias en autocuidado y salud mental dictadas por la entidad (Art. 2.2.1.5.8, Dec. 1072 de 2015).", no: "Exige adaptaciones de seguridad industrial complejas o sistemas de protección colectiva disponibles exclusivamente en sede." }
+                ]
+            },
+            {
+                bloque: "G",
+                titulo: "G. CONDICIONES TECNOLÓGICAS Y CONECTIVIDAD",
+                preguntas: [
+                    { id: 31, texto: "Se dispone de conexión a internet estable", si: "Garantiza el soporte TIC y el derecho al auxilio de conectividad en reemplazo del transporte (Art. 53 de la Ley 2466 de 2025).", no: "Las fluctuaciones críticas de red en la zona vulneran la continuidad de las operaciones y el acceso a plataformas core." },
+                    { id: 32, texto: "El trabajador puede acceder a sistemas institucionales", si: "Los accesos remotos y perfiles están validados bajo protocolos de red externa autorizados (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "El acceso a los aplicativos core está restringido de forma estricta a la red LAN física interna de la organización." },
+                    { id: 33, texto: "Se garantiza disponibilidad de equipos adecuados", si: "El empleador suministrará hardware seguro con especificaciones técnicas aptas o mediará acuerdo de equipo propio (Art. 2.2.1.5.19, Dec. 1072 de 2015).", no: "Se identifica obsolescencia tecnológica o carencia de terminales portátiles corporativas listas para asignación." },
+                    { id: 34, texto: "No existen barreras tecnológicas críticas", si: "El nivel de competencias digitales del colaborador es óptimo para la manipulación del entorno TIC (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Se identifican brechas digitales severas o bloqueos de software que impiden la ejecución autónoma de la labor." }
+                ]
+            },
+            {
+                bloque: "H",
+                titulo: "H. SEGURIDAD DE LA INFORMACIÓN",
+                preguntas: [
+                    { id: 35, texto: "La actividad no compromete información sensible sin control", si: "Los datos compartidos viajan cifrados bajo las políticas de confidencialidad y secreto empresarial (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Existe un riesgo elevado de fuga de datos reservados o datos protegidos por la Ley 1581 de 2012 fuera de la sede." },
+                    { id: 36, texto: "Se pueden aplicar protocolos de seguridad digital", si: "El software permite exigir autenticación multifactor y medidas de seguridad digital obligatorias (Art. 2.2.1.5.3, Dec. 1072 de 2015).", no: "Las herramientas a usar carecen de capas de protección avanzadas, vulnerando el entorno ante incidentes cibernéticos." },
+                    { id: 37, texto: "Existen mecanismos de control de acceso y trazabilidad", si: "Cada descarga o modificación genera un registro de auditoría en los repositorios virtuales (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "El aplicativo carece de sistemas de log o auditoría interna, impidiendo rastrear quién manipula la información institucional." }
+                ]
+            },
+            {
+                bloque: "I",
+                titulo: "I. CONDICIONES LEGALES DE LA MODALIDAD",
+                preguntas: [
+                    { id: 38, texto: "La modalidad puede formalizarse contractualmente", si: "Cumple las exigencias legales para la firma del contrato escrito o modificación contractual (Art. 6 de la Ley 2466 de 2025 y Art. 3, Dec. 884 de 2012).", no: "Cláusulas estatutarias rígidas o restricciones de la naturaleza del cargo impiden la formalización del otrosí laboral." },
+                    { id: 39, texto: "Existe viabilidad jurídica para la modalidad seleccionada", si: "Respaldado plenamente por el régimen normativo de trabajo a distancia en Colombia (Ley 1221 de 2008 y Decreto 555 de 2022).", no: "Existen vacíos legales específicos o prohibiciones expresas en el Manual de Funciones para deslocalizar esta labor." },
+                    { id: 40, texto: "Se puede garantizar cumplimiento de obligaciones laborales", si: "Garantiza plenamente el respeto a la jornada máxima legal, el descanso y el derecho a la desconexión laboral (Art. 1, Ley 2191 de 2022).", no: "La volatilidad de las tareas pone en riesgo las fronteras del descanso efectivo y la desconexión del personal (Art. 3, Ley 2191 de 2022)." },
+                    { id: 41, texto: "Se respeta el principio de voluntariedad (cuando aplica)", si: "La transición al modelo se fundamenta en el mutuo acuerdo y el derecho explícito a la reversibilidad (Art. 2.2.1.5.16, Dec. 1072 de 2015).", no: "La asignación responde a una imposición operativa unilateral que vulnera la voluntariedad del Art. 2.2.1.5.16 del Decreto 1072 de 2015." }
+                ]
+            },
+            {
+                bloque: "J",
+                titulo: "J. IDONEIDAD ORGANIZACIONAL",
+                preguntas: [
+                    { id: 42, texto: "La modalidad no afecta la eficiencia del proceso", si: "Los indicadores demuestran que el flujo digital sostiene o incrementa los niveles de productividad (Art. 2.2.1.5.25, Dec. 1072 de 2015).", no: "El proceso sufre cuellos de botella severos o caídas en tiempos de respuesta al operar fuera de las instalaciones físicas." },
+                    { id: 43, texto: "No impacta negativamente la atención al ciudadano/cliente", si: "Los canales y ventanillas virtuales garantizan respuestas oportunas bajo la política pública de diálogo social (Art. 1, Ley 2466 de 2025).", no: "El ciudadano o usuario final exige un canal presencial obligatorio en las oficinas de la sede para resolver su trámite." },
+                    { id: 44, texto: "La organización cuenta con lineamientos para la modalidad", si: "La entidad cuenta con una Política Interna de Teletrabajo adoptada y publicada de forma virtual (Art. 2.2.1.5.18, Dec. 1072 de 2015).", no: "Se carece de una política institucional interna que regule los términos y condiciones del trabajo a distancia (Art. 2.2.1.5.18, Dec. 1072 de 2015)." },
+                    { id: 45, texto: "Existe capacidad de supervisión institucional", si: "El cuerpo de líderes cuenta con las competencias y herramientas informáticas para coordinar equipos a distancia (Art. 9, Ley 2466 de 2025).", no: "El esquema de liderazgo depende estrictamente de la vigilancia presencial tradicional y el control minutero de horario en sede." }
+                ]
+            }
+        ];
+
+        let metadatos = { fecha: new Date().toLocaleDateString() };
+
+        function validarEIniciar() {
+            const cargo = document.getElementById('inputCargo').value.trim();
+            const area = document.getElementById('inputArea').value.trim();
+            if (!cargo || !area) {
+                alert("Por favor, ingrese el Cargo y el Área antes de habilitar el checklist.");
+                return;
+            }
+            // Oculta los elementos del menú inicial
+            document.getElementById('cabezoteEvaluacion').style.display = 'none';
+            document.getElementById('contenedorCamposInicio').style.display = 'none';
+            document.getElementById('btnHabilitar').style.display = 'none';
+
+            // Guardar en metadatos
+            metadatos.cargo = cargo;
+            metadatos.area = area;
+
+            generarTablasEstructuradas();
+        }
+
+        function generarTablasEstructuradas() {
+            const contenedor = document.getElementById('tablasPreguntasContenedor');
+            contenedor.innerHTML = '<h2 style="margin-top:0; font-size: 18px; text-align:center;">3. INSTRUCCIONES: Marque SÍ o NO en cada ítem</h2>';
+
+            estructuraChecklist.forEach(seccion => {
+                let htmlTabla = `
+                    <div class="titulo-bloque">${seccion.titulo}</div>
+                    <table class="tabla-seccion">
+                        <thead>
+                            <tr>
+                                <th>Ítem / Descripción de la Condición</th>
+                                <th class="col-check">SÍ</th>
+                                <th class="col-check">NO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                seccion.preguntas.forEach(p => {
+                    htmlTabla += `
+                        <tr>
+                            <td><strong>${p.id}.</strong> ${p.texto}</td>
+                            <td class="col-check">
+                                <input type="radio" name="p_${p.id}" value="SI" required>
+                            </td>
+                            <td class="col-check">
+                                <input type="radio" name="p_${p.id}" value="NO" required>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                htmlTabla += `</tbody></table>`;
+                contenedor.insertAdjacentHTML('beforeend', htmlTabla);
+            });
+
+            document.getElementById('mainContainer').style.display = 'block';
+            document.getElementById('checklistForm').style.display = 'block';
+        }
+
+        function procesarMatrizResultados() {
+            const form = document.getElementById('checklistForm');
+            if (!form.checkValidity()) {
+                alert("Por favor, responda todos los 45 ítems del checklist antes de proceder.");
+                form.reportValidity();
+                return;
+            }
+
+            let conteoSis = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, I: 0, J: 0 };
+            let conteoNos = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, I: 0, J: 0 };
+            let htmlDetalleJustificado = '<h3 style="font-size: 15px; border-bottom: 2px solid #333; padding-bottom: 5px; margin-top:25px;">SUSTENTACIÓN DETALLADA ÍTEM POR ÍTEM</h3>';
+
+            estructuraChecklist.forEach(seccion => {
+                seccion.preguntas.forEach(p => {
+                    const seleccion = document.querySelector(`input[name="p_${p.id}"]:checked`).value;
+                    let justificacionTexto = "";
+
+                    if (seleccion === "SI") {
+                        conteoSis[seccion.bloque]++;
+                        justificacionTexto = p.si;
+                    } else {
+                        conteoNos[seccion.bloque]++;
+                        justificacionTexto = p.no;
+                    }
+
+                    htmlDetalleJustificado += `
+                        <div class="item-justificado">
+                            <p style="margin: 0 0 3px 0;"><strong>Ítem ${p.id}:</strong> ${p.texto}</p>
+                            <p style="margin: 0; font-size:12.5px;"><strong>Respuesta marcada:</strong> ${seleccion}</p>
+                            <div class="box-sustentacion">
+                                <strong>Argumento Normativo:</strong> ${justificacionTexto}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            let modalidadFinal = "Trabajo Híbrido";
+            let explicacionRegla = "Resultados Mixtos: Coexisten variables de presencialidad indispensables junto con capacidades de gestión digital autónoma.";
+
+            if (conteoSis.B > 2) {
+                modalidadFinal = "Presencial";
+                explicacionRegla = "Predominio en el Bloque B: La labor exige obligatoriamente infraestructura física o contacto directo.";
+            }
+            else if (conteoSis.A >= 4 && conteoSis.C >= 3 && conteoSis.E >= 3 && conteoSis.F >= 3 && conteoSis.G >= 3 && conteoSis.H >= 2 && conteoSis.I >= 3) {
+                modalidadFinal = "Teletrabajo";
+                explicacionRegla = "Cumple criterios en A, C, E, F, G, H, I: Viabilidad tecnológica, legal, conectividad y seguridad de la información plenas.";
+            }
+            else if (conteoSis.A >= 4 && conteoSis.C >= 3 && conteoSis.E >= 3 && conteoSis.G >= 3 && conteoSis.H >= 2) {
+                modalidadFinal = "Trabajo Remoto";
+                explicacionRegla = "Cumple criterios fijos en A, C, E, G, H: Enfoque neto en entregables y autonomía tecnológica sin requerir sede física.";
+            }
+
+            let infoGeneralHtml = `
+                <div style="font-size: 13.5px; line-height: 1.5; margin-bottom: 15px;">
+                    <p style="margin: 3px 0;"><strong>Cargo:</strong> ${metadatos.cargo}</p>
+                    <p style="margin: 3px 0;"><strong>Área:</strong> ${metadatos.area}</p>
+                    <p style="margin: 3px 0;"><strong>Fecha de evaluación:</strong> ${metadatos.fecha}</p>
+                </div>
+            `;
+
+            const resumenHTML = `
+                ${infoGeneralHtml}
+                <div class="resultado-box">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #111;">4. INTERPRETACIÓN DE RESULTADOS AUTOMATIZADA</h3>
+                    <p style="margin: 5px 0; font-size: 17px;"><strong>Modalidad Técnica Determinada:</strong> <span style="color:#39A900; font-weight:bold;">${modalidadFinal}</span></p>
+                    <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;"><strong>Criterio normativo de decisión:</strong> ${explicacionRegla}</p>
+                </div>
+            `;
+
+            const firmaHTML = `
+                <div style="margin-top: 40px; page-break-inside: avoid; font-size: 13px;">
+                    <h3 style="font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 3px;">5. VALIDACIÓN Y FIRMAS</h3>
+                    <br><br>
+                    <table style="width: 100%; border: none;">
+                        <tr>
+                            <td style="border: none; width: 50%; text-align: left;">________________________________________<br><strong>Firma de Evaluador</strong></td>
+                            <td style="border: none; width: 50%; text-align: left;">________________________________________<br><strong>Responsable Talento Humano</strong><br>Validación Institucional</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('checklistForm').style.display = 'none';
+            document.getElementById('resultadosContenedor').innerHTML = resumenHTML + htmlDetalleJustificado + firmaHTML;
+            document.getElementById('reporte-pdf').style.display = 'block';
+            document.getElementById('btnDescargarPDF').style.display = 'inline-block';
+            document.getElementById('btnReiniciar').style.display = 'inline-block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function reiniciarEvaluacion() {
+            document.getElementById('checklistForm').reset();
+            document.getElementById('inputCargo').value = '';
+            document.getElementById('inputArea').value = '';
+            document.getElementById('reporte-pdf').style.display = 'none';
+            document.getElementById('btnDescargarPDF').style.display = 'none';
+            document.getElementById('btnReiniciar').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'none';
+
+            // Restaura la vista limpia de los botones centrales
+            document.getElementById('cabezoteEvaluacion').style.display = 'block';
+            document.getElementById('contenedorCamposInicio').style.display = 'flex';
+            document.getElementById('btnHabilitar').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function exportarAPDF() {
+            const elementoPdf = document.getElementById('reporte-pdf');
+            const opcionesPdf = {
+                margin: [15, 15, 15, 15],
+                filename: `Checklist_Normativo_Evaluacion.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, logging: false, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opcionesPdf).from(elementoPdf).save().then(() => {
+                alert("¡El reporte con sustento normativo detallado ha sido generado y descargado exitosamente!");
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sondeo de Conocimientos Previos - Ecosistema Digital y Modalidades</title>
+    <!-- Dependencia oficial para exportación limpia a PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #C8D6BC;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .contenedor-principal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .logo-sena {
+            background-color: #39A900;
+            color: white;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #2c8200;
+            margin-top: 0;
+            border-bottom: 2px solid #39A900;
+            padding-bottom: 8px;
+        }
+
+        .informacion-inicial {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #39A900;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-size: 14.5px;
+            line-height: 1.5;
+        }
+
+        .campo-usuario {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo-usuario label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14.5px;
+        }
+
+        .campo-usuario input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .campo-usuario input[type="text"]:focus {
+            border-color: #39A900;
+        }
+
+        .bloque-pregunta {
+            background-color: #f4f7f4;
+            border: 1px solid #d0e1d0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .enunciado {
+            font-size: 15.5px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #111;
+        }
+
+        .opcion-respuesta {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .opcion-respuesta:hover {
+            background-color: #e8f4e0;
+            border-color: #39A900;
+        }
+
+        .opcion-respuesta input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .btn-accion {
+            background-color: #39A900;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+
+        .btn-accion:hover {
+            background-color: #2c8200;
+        }
+
+        .btn-descarga {
+            background-color: #0078d4;
+            margin-top: 15px;
+        }
+
+        .btn-descarga:hover {
+            background-color: #005a9e;
+        }
+
+        /* Estilos de impresión PDF */
+        #zona-reporte-pdf {
+            display: none;
+            background: white;
+            padding: 10px;
+        }
+
+        .header-pdf {
+            border-bottom: 3px solid #39A900;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .item-pdf-resultado {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            page-break-inside: avoid;
+        }
+
+        .badge-resultado {
+            display: inline-block;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-top: 5px;
+        }
+
+        .badge-correcto {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-incorrecto {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Estilos para el logo superior y textos */
+        .cabecera-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .logo-imagen {
+            max-width: 90px;
+            height: auto;
+            margin-bottom: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-imagen:hover {
+            transform: scale(1.05);
+        }
+
+        .texto-sena {
+            font-size: 24px;
+            font-weight: 800;
+            color: #39A900;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .subtexto-sena {
+            font-size: 15px;
+            font-weight: 600;
+            color: #555;
+            margin: 4px 0 0 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor-principal">
+        <div class="cabecera-logo">
+            <img src="imagen.png" alt="Logo SENA" class="logo-imagen">
+            <h1 class="texto-sena">SENA</h1>
+            <p class="subtexto-sena">Centro de Gestión Administrativa</p>
+        </div>
+        <div id="cabezote" class="logo-sena">SISTEMA DE GESTIÓN ACADÉMICA - SONDEO DE CONOCIMIENTOS PREVIOS</div>
+
+        <form id="formularioSondeo" onsubmit="evaluarSondeo(event)">
+            <h2>Sondeo Temático Automatizado</h2>
+            <div class="informacion-inicial">
+                <strong>Estimado Participante / Aprendiz:</strong> Este instrumento evalúa los componentes de
+                apropiación del Ecosistema Microsoft 365, Metodología Kanban y marcos de Trabajo a Distancia. Cada
+                ejecución del archivo compila de forma completamente aleatoria un grupo balanceado de 10 preguntas
+                cubriendo la totalidad de los módulos técnicos de formación.
+            </div>
+
+            <div class="campo-usuario">
+                <label for="nombreUsuario">Nombre Completo del Participante:</label>
+                <input type="text" id="nombreUsuario" required placeholder="Escriba sus nombres y apellidos completos">
+            </div>
+
+            <!-- Contenedor dinámico de preguntas -->
+            <div id="bloquePreguntasDinamicas"></div>
+
+            <button type="submit" class="btn-accion">Enviar y Procesar Diagnóstico</button>
+        </form>
+
+        <button id="btnDescargarPDF" class="btn-accion btn-descarga" style="display: none;"
+            onclick="generarDocumentoPDF()">💾 Descargar Resultados de Sondeo (PDF)</button>
+
+        <!-- Contenedor del Reporte PDF -->
+        <div id="zona-reporte-pdf">
+            <div class="header-pdf">
+                <h2 style="margin: 0; font-size: 20px; color: #111;">REPORTE OFICIAL DE EVALUACIÓN - CONOCIMIENTOS
+                    PREVIOS</h2>
+                <p id="metaEvaluado" style="margin: 5px 0 0 0; font-size: 14px; color: #333;"></p>
+                <p id="metaFecha" style="margin: 2px 0 0 0; font-size: 12px; color: #666; font-style: italic;"></p>
+                <h3 id="metaPuntaje" style="margin: 10px 0 0 0; font-size: 16px; color: #2c8200;"></h3>
+            </div>
+            <div id="cuerpoResultadosPDF"></div>
+        </div>
+    </div>
+
+    <script>
+        // BANCO DE DATOS DE 100 PREGUNTAS DISTRIBUIDAS EQUITATIVAMENTE (10 POR CATEGORÍA)
+        const bancoPreguntasCompleto = {
+            1: [ // 1. Ecosistema M365 (Frontend vs Backend)
+                {
+                    enunciado: "¿Cuál de las siguientes opciones define correctamente el concepto de 'Frontend' dentro del ecosistema de Microsoft 365?",
+                    opciones: { A: "La estructura lógica invisible donde se compilan y procesan flujos.", B: "La parte visible del sistema digital con la que interactúa directamente el usuario.", C: "El repositorio centralizado de administración de servidores locales.", D: "La capa de encriptación de datos basada en Azure." },
+                    correcta: "B", justificacion: "El frontend corresponde a la capa operativa y visible donde el usuario ejecuta sus tareas diarias directamente."
+                },
+                {
+                    enunciado: "Si un usuario edita una tarea en Microsoft Planner y carga un archivo adjunto, ¿dónde se almacena en el 'Backend'?",
+                    opciones: { A: "Dentro de la base de datos local de Planner.", B: "En el buzón de almacenamiento de Outlook.", C: "En el sitio de SharePoint correspondiente al grupo de trabajo.", D: "En el disco duro físico del servidor proxy empresarial." },
+                    correcta: "C", justificacion: "El backend de Microsoft 365 utiliza a SharePoint como el núcleo de almacenamiento organizacional tras escena."
+                },
+                {
+                    enunciado: "El procesamiento oculto de metadatos y la sincronización automática de archivos compartidos pertenecen al...",
+                    opciones: { A: "Frontend de usuario", B: "Backend del ecosistema", C: "Canal General de Teams", D: "Calendario institucional" },
+                    correcta: "B", justificacion: "El backend gestiona el procesamiento y la conexión oculta de la información organizativa."
+                },
+                {
+                    enunciado: "En el ecosistema M365, las herramientas no son aplicaciones aisladas sino un...",
+                    opciones: { A: "Servidor físico local", B: "Sistema interconectado que centraliza el flujo de trabajo", C: "Disco de almacenamiento análogo", D: "Software externo comercial" },
+                    correcta: "B", justificacion: "La interconexión nativa permite que la información fluya de forma continua y centralizada."
+                },
+                {
+                    enunciado: "¿Qué herramienta actúa como el FrontEnd unificado donde converge la comunicación y el acceso a los documentos?",
+                    opciones: { A: "Microsoft Outlook Exchange.", B: "Microsoft Teams.", C: "Microsoft OneDrive personal.", D: "SharePoint Central Admin." },
+                    correcta: "B", justificacion: "Teams funciona como el Hub unificado de usuario, sirviendo de interfaz directa para conectar archivos, tareas y chats."
+                },
+                {
+                    enunciado: "La capa de productividad es donde trabajan los usuarios directamente; por ende, corresponde al:",
+                    opciones: { A: "Backend transaccional", B: "Frontend o capa operativa visible", C: "Servidor proxy", D: "Criptosistema Azure" },
+                    correcta: "B", justificacion: "Toda aplicación con la que interactúa el usuario de forma directa compone la capa del frontend."
+                },
+                {
+                    enunciado: "Cuando SharePoint procesa permisos documentales en segundo plano, está actuando como:",
+                    opciones: { A: "Un canal de Teams", B: "El Core Backend de datos de la organización", C: "Un correo de Outlook", D: "Un bucket de Planner" },
+                    correcta: "B", justificacion: "La gestión de accesos corporativos y seguridad de archivos se ejecuta en el backend de SharePoint."
+                },
+                {
+                    enunciado: "El flujo de datos del ecosistema indica que la información se consolida formalmente en:",
+                    opciones: { A: "OneDrive borrador", B: "SharePoint", C: "El disco duro local", D: "El buscador Edge" },
+                    correcta: "B", justificacion: "SharePoint es la base documental donde se asientan y guardan los datos unificados del grupo."
+                },
+                {
+                    enunciado: "¿Qué componente del backend asegura que las tareas de Planner se visualicen correctamente en Teams?",
+                    opciones: { A: "La capa lógica de procesamiento de tareas de Planner", B: "El buzón de salida de Outlook", C: "La caché del navegador web", D: "El disco duro local" },
+                    correcta: "A", justificacion: "La capa lógica procesa los datos de buckets y tareas para enviarlos de forma fluida a la interfaz de Teams."
+                },
+                {
+                    enunciado: "La creación de un archivo en el espacio personal del usuario inicia el flujo del ecosistema desde:",
+                    opciones: { A: "SharePoint directamente", B: "OneDrive personal", C: "El correo unificado", D: "El calendario público" },
+                    correcta: "B", justificacion: "OneDrive provee el espacio de almacenamiento personal para iniciar borradores antes de compartirlos."
+                }
+            ],
+            2: [ // 2. Microsoft Teams como Aula Virtual / LMS
+                {
+                    enunciado: "Al estructurar Microsoft Teams como un Entorno de Gestión del Aprendizaje (LMS), ¿cuál es el rol del Instructor?",
+                    opciones: { A: "Miembro del equipo con permisos restringidos.", B: "Propietario del equipo con control total sobre configuración, canales y tareas.", C: "Invitado externo administrado.", D: "Supervisor analítico sin capacidad de modificar contenidos." },
+                    correcta: "B", justificacion: "En el modelo Teams LMS, el instructor asume el rol de Propietario para coordinar y evaluar el curso de forma soberana."
+                },
+                {
+                    enunciado: "Para organizar de forma óptima el aprendizaje dentro de un curso en Teams, ¿cuál es la recomendación clave?",
+                    opciones: { A: "Colocar todo el material exclusivamente en el muro del canal General.", B: "Crear un equipo diferente por cada semana de clase.", C: "Estructurar el curso mediante canales temáticos específicos.", D: "Prohibir el uso de canales para centralizar todo en mensajes privados." },
+                    correcta: "C", justificacion: "Los canales segmentan de forma clara el itinerario formativo, evitando la saturación del canal General."
+                },
+                {
+                    enunciado: "Al usar Teams como LMS, ¿qué sección representa la 'ficticia aula virtual' o curso?",
+                    opciones: { A: "Un chat privado", B: "Un Equipo o Ficha estructurado", C: "Un archivo local de Word", D: "La bandeja de entrada de Outlook" },
+                    correcta: "B", justificacion: "El Equipo unifica a los aprendices como miembros y al instructor como propietario."
+                },
+                {
+                    enunciado: "Es el único canal inamovible creado por defecto en Microsoft Teams:",
+                    opciones: { A: "Canal de Contenidos", B: "Canal General", C: "Canal de Soporte", D: "Canal de Actividades" },
+                    correcta: "B", justificacion: "El canal General centraliza avisos y es la raíz nativa del equipo."
+                },
+                {
+                    enunciado: "Dentro de la pestaña Tareas de Teams como LMS, ¿cuál es una práctica mandatoria para la estandarización?",
+                    opciones: { A: "Cambiar los nombres en cada reto usando términos variables.", B: "Utilizar una nomenclatura uniforme, adjuntar instrucciones explícitas y fijar una única vía de entrega.", C: "Permitir que las evidencias se envíen de forma abierta por cualquier red.", D: "Ocultar la rúbrica de evaluación." },
+                    correcta: "B", justificacion: "Garantizar una vía unificada elimina cuellos de botella y asegura transparencia en auditorías."
+                },
+                {
+                    enunciado: "¿Cuál es el propósito fundamental de utilizar canales en un equipo de Teams configurado como LMS?",
+                    opciones: { A: "Segmentar y organizar los contenidos, actividades y soporte del curso de forma temática.", B: "Restringir el chat entre los estudiantes.", C: "Aumentar el consumo de datos de internet.", D: "Duplicar las pestañas de Planner." },
+                    correcta: "A", justificacion: "Los canales sirven para organizar de forma lógica y estructurada el flujo del aprendizaje."
+                },
+                {
+                    enunciado: "En un curso estructurado en Teams, los aprendices se vinculan bajo el rol de:",
+                    opciones: { A: "Propietarios administradores", B: "Miembros del equipo", C: "Invitados externos temporales", D: "Desarrolladores de código" },
+                    correcta: "B", justificacion: "Los estudiantes ingresan como miembros para interactuar, ver contenidos y entregar tareas sin alterar la estructura."
+                },
+                {
+                    enunciado: "¿Qué ventaja ofrece la pestaña de Tareas nativa de Teams en comparación con recibir correos?",
+                    opciones: { A: "Centraliza las entregas, los plazos, las calificaciones y la retroalimentación en un solo lugar.", B: "Permite borrar las entregas de los alumnos sin dejar rastro.", C: "Envía un mensaje de texto al teléfono celular del alumno.", D: "Sincroniza los archivos con discos locales externos." },
+                    correcta: "A", justificacion: "La pestaña Tareas es el módulo LMS por excelencia para el control y registro de evidencias evaluables."
+                },
+                {
+                    enunciado: "Al publicar anuncios formales u oficiales en el curso, el canal idóneo es:",
+                    opciones: { A: "Canal Soporte", B: "Canal General", C: "Chat privado grupal", D: "Pestaña de Gráficos" },
+                    correcta: "B", justificacion: "El canal General está reservado para la comunicación macro, avisos oficiales y directrices del instructor."
+                },
+                {
+                    enunciado: "La organización metodológica del docente dentro de Teams influye directamente en:",
+                    opciones: { A: "El espacio físico del centro de formación", B: "La claridad, el orden del proceso y la disminución de dudas del aprendiz", C: "La velocidad de navegación del proveedor de internet", D: "El tipo de contrato civil del estudiante" },
+                    correcta: "B", justificacion: "Un entorno virtual bien estructurado facilita la autogestión y el éxito del proceso formativo."
+                }
+            ],
+            3: [ // 3. Repositorio y Flujos de Información (SharePoint & OneDrive)
+                {
+                    enunciado: "Dentro de las buenas prácticas de gestión documental, ¿cuál es la diferencia funcional entre OneDrive y SharePoint?",
+                    opciones: { A: "OneDrive almacena bases de datos SQL y SharePoint guarda archivos de Word.", B: "OneDrive es para borradores y trabajo individual; SharePoint es el repositorio oficial e institucional del grupo.", C: "SharePoint es de uso exclusivo para aprendices y OneDrive para instructores.", D: "No existe ninguna diferencia; son exactamente el mismo servicio." },
+                    correcta: "B", justificacion: "OneDrive representa el espacio personal de desarrollo; SharePoint consolida la información autorizada del equipo."
+                },
+                {
+                    enunciado: "¿Cuál es el flujo correcto de la información para publicar material de estudio oficial según el estándar?",
+                    opciones: { A: "Teams → Correo Masivo → OneDrive Personal.", B: "OneDrive (Preparación personal) → Teams (Publicación al curso) → SharePoint (Almacenamiento institucional definitivo).", C: "SharePoint Interno → WhatsApp Grupal → Calendario Outlook.", D: "Descarga local → Impresión física → OneDrive del Centro." },
+                    correcta: "B", justificacion: "Este flujo garantiza la trazabilidad, la centralización institucional y evita la duplicación de archivos obsoletos."
+                },
+                {
+                    enunciado: "Todo archivo compartido que vive en los canales de Teams realmente reside en...",
+                    opciones: { A: "El disco duro del PC", B: "SharePoint (Base documental de almacenamiento organizacional)", C: "El calendario de Outlook", D: "La memoria RAM del sistema" },
+                    correcta: "B", justificacion: "Teams expone en la capa de frontend lo que SharePoint aloja y organiza de forma segura en el backend."
+                },
+                {
+                    enunciado: "El espacio personal para archivos individuales y borradores en desarrollo es:",
+                    opciones: { A: "SharePoint Institucional", B: "Microsoft OneDrive", C: "Microsoft Planner Colectivo", D: "Muro de Teams" },
+                    correcta: "B", justificacion: "OneDrive está destinado al trabajo personal antes de decidir su publicación oficial al grupo."
+                },
+                {
+                    enunciado: "¿Cuándo se debe acceder a los archivos directamente desde la interfaz de SharePoint?",
+                    opciones: { A: "Para chatear de forma síncrona.", B: "Cuando se necesite una estructura compleja de carpetas, control de versiones o gestión de documentos institucionales base.", C: "Únicamente cuando la plataforma de Teams sufra una caída total.", D: "Para responder cuestionarios interactivos." },
+                    correcta: "B", justificacion: "SharePoint ofrece funciones avanzadas de auditoría, control de versiones e histórico documental corporativo."
+                },
+                {
+                    enunciado: "Si subes una guía de aprendizaje a un canal de Teams, en el backend estás impactando a:",
+                    opciones: { A: "La base de datos de Outlook", B: "El sitio de SharePoint del equipo", C: "El disco duro local del aprendiz", D: "El servidor de Power Automate" },
+                    correcta: "B", justificacion: "Teams y SharePoint están integrados de tal forma que los archivos de los canales viven en carpetas de SharePoint."
+                },
+                {
+                    enunciado: "OneDrive debe ser considerado por el instructor como un espacio de:",
+                    opciones: { A: "Almacenamiento institucional del curso", B: "Borradores y preparación personal de clases", C: "Entrega oficial de evidencias de alumnos", D: "Foro de debate público" },
+                    correcta: "B", justificacion: "OneDrive es un repositorio individual de archivos en proceso, no el sitio de consulta oficial del curso."
+                },
+                {
+                    enunciado: "¿Qué sucede con la trazabilidad si compartes archivos del curso desde tu OneDrive personal en lugar de cargarlos en Teams?",
+                    opciones: { A: "Se debilita el repositorio institucional y se pierde el control centralizado del centro.", B: "Aumenta la velocidad de descarga.", C: "Los alumnos adquieren permisos de administración en SharePoint.", D: "Se borran automáticamente al final del día." },
+                    correcta: "A", justificacion: "Los archivos del curso deben vivir en el espacio del equipo (SharePoint/Teams) para garantizar la continuidad institucional."
+                },
+                {
+                    enunciado: "El control de versiones en SharePoint es sumamente útil para:",
+                    opciones: { A: "Ver el historial de modificaciones de documentos institucionales y guías base.", B: "Cambiar la foto de perfil de Teams.", C: "Aumentar la cantidad de grupos en Planner.", D: "Enviar correos automáticos a Outlook." },
+                    correcta: "A", justificacion: "El control de versiones permite auditar cambios, recuperar estados anteriores y mantener un archivo fidedigno."
+                },
+                {
+                    enunciado: "La estructura documental ordenada en el repositorio oficial evita:",
+                    opciones: { A: "El cobro de la licencia de software", B: "La duplicación de información y el manejo de archivos obsoletos", C: "La visualización de tareas en To Do", D: "El uso de check-ins en Reflect" },
+                    correcta: "B", justificacion: "Centralizar los archivos en SharePoint garantiza que todos consulten la versión vigente y autorizada."
+                }
+            ],
+            4: [ // 4. Planificación y Gestión del Tiempo (Calendario M365)
+                {
+                    enunciado: "Al publicar un evento de fecha límite en el Calendario de Teams para evitar olvidos académicos, ¿cuál es una buena práctica?",
+                    opciones: { A: "No colocar título para generar intriga.", B: "Usar un título claro como 'ENTREGA - Reto 01', aclarar que no es clase e incluir el enlace directo a la tarea.", C: "Programarlo a la misma hora de la sesión presencial.", D: "Asignarle prioridad baja en To Do." },
+                    correcta: "B", justificacion: "Establecer la estructura clara en el calendario unificado reduce confusiones y olvidos en entregas sincrónicas."
+                },
+                {
+                    enunciado: "¿Qué herramienta del ecosistema de Microsoft 365 consolida automáticamente a nivel personal las tareas asignadas en Planner?",
+                    opciones: { A: "Microsoft SharePoint Lists.", B: "Microsoft To Do (sección Asignado a mí).", C: "Microsoft Access Online.", D: "Power BI Pro Dynamics." },
+                    correcta: "B", justificacion: "Microsoft To Do es el agregador de tareas individuales que unifica Planner y el día a día del colaborador."
+                },
+                {
+                    enunciado: "Los recordatorios de vencimiento de tareas de Planner se integran de forma nativa con:",
+                    opciones: { A: "Microsoft Power BI", B: "Microsoft Outlook (Notificaciones y Agenda)", C: "SharePoint central", D: "Reflect emocional" },
+                    correcta: "B", justificacion: "Outlook centraliza las alertas de agenda y tiempos límites del ecosistema a través del correo e invitaciones."
+                },
+                {
+                    enunciado: "Para consolidar tus subtareas y evidencias de control interno en Planner usas...",
+                    opciones: { A: "Un nuevo bucket", B: "La Lista de comprobación o Checklist de la tarea", C: "Un canal privado de Teams", D: "Un correo en Outlook" },
+                    correcta: "B", justificacion: "El checklist mide el avance operativo real y pormenorizado de la tarjeta Kanban."
+                },
+                {
+                    enunciado: "¿Qué limitación nativa presenta el Calendario de Microsoft Teams al programar alertas?",
+                    opciones: { A: "No permite establecer fechas a largo plazo.", B: "Borra automáticamente las tareas.", C: "Muestra todos los eventos visualmente bajo el formato de 'Reunión', aunque no lo sean.", D: "Está restringido a administradores globales." },
+                    correcta: "C", justificacion: "El calendario es un gran apoyo de autogestión, pero etiqueta todo como reunión, por lo que se debe especificar en el texto."
+                },
+                {
+                    enunciado: "Para que un aprendiz tenga éxito en su autogestión, el calendario debe utilizarse como:",
+                    opciones: { A: "El espacio de carga de archivos de evidencias", B: "Un mapa de ruta visual y recordatorio de momentos clave de entrega", C: "Un chat informal de asistencia", D: "Un repositorio de guías de aprendizaje" },
+                    correcta: "B", justificacion: "El calendario sitúa en el tiempo las responsabilidades sin reemplazar los módulos de entrega (Tareas)."
+                },
+                {
+                    enunciado: "La aplicación 'Microsoft To Do' ayuda al colaborador individual porque:",
+                    opciones: { A: "Genera informes de nómina automáticamente.", B: "Muestra su lista de tareas personales unificada con las de los planes grupales de Planner.", C: "Permite programar reuniones de Teams.", D: "Es el backend de almacenamiento de SharePoint." },
+                    correcta: "B", justificacion: "To Do consolida el día a día individual, cruzando las obligaciones del usuario de forma ágil."
+                },
+                {
+                    enunciado: "Cuando una tarea en Planner tiene una fecha de vencimiento clara, esta impacta a:",
+                    opciones: { A: "El manual de funciones del cargo", B: "La programación de alertas y visualización temporal en el ecosistema", C: "La velocidad del sitio web Netlify", D: "Los colores del logo institucional" },
+                    correcta: "B", justificacion: "Las fechas límites ordenan cronológicamente las alertas automáticas enviadas a Outlook y vistas de calendario."
+                },
+                {
+                    enunciado: "Establecer fechas límites en las actividades de Planner es una buena práctica para:",
+                    opciones: { A: "Evitar la acumulación de trabajo en proceso y fomentar la disciplina de entrega", B: "Ocultar el avance de los proyectos", C: "Sancionar económicamente al equipo", D: "Cambiar el tipo de contrato laboral" },
+                    correcta: "A", justificacion: "Las fechas delimitan el tiempo efectivo y miden de forma objetiva los retrasos en los tableros Kanban."
+                },
+                {
+                    enunciado: "En la gestión del tiempo del ecosistema, Outlook aporta:",
+                    opciones: { A: "El almacenamiento de videos pesados", B: "La comunicación formal, correos institucionales y la agenda unificada", C: "El renderizado de código HTML/CSS", D: "El control emocional de Reflect" },
+                    correcta: "B", justificacion: "Outlook es la base de la mensajería formal y la sincronización horaria del ecosistema M365."
+                }
+            ],
+            5: [ // 5. Analítica Educativa y Comportamiento (Insights)
+                {
+                    enunciado: "¿Cuál de las siguientes opciones describe la función principal de la extensión 'Insights' dentro de un equipo de Microsoft Teams?",
+                    opciones: { A: "Generar calificaciones numéricas automatizadas.", B: "Visualizar y analizar macrodatos de participación, entregas y tendencias de interacción para decisiones pedagógicas.", C: "Bloquear el acceso a internet de los alumnos rezagados.", D: "Enviar correos de felicitación masivos." },
+                    correcta: "B", justificacion: "Insights es una herramienta analítica y de diagnóstico enfocada en la mejora del acompañamiento docente basada en datos."
+                },
+                {
+                    enunciado: "Un instructor nota en Insights una caída drástica en las interacciones. ¿Qué acción pedagógica se deriva de esto?",
+                    opciones: { A: "Sancionar de forma unánime a todo el grupo.", B: "Ignorar el dato puesto que las métricas digitales no importan.", C: "Identificar los momentos críticos y ajustar las estrategias didácticas para rescatar el compromiso.", D: "Eliminar el canal temático." },
+                    correcta: "C", justificacion: "Insights busca transformar datos en acciones pedagógicas oportunas para guiar el curso."
+                },
+                {
+                    enunciado: "Insights es una herramienta embebida en Teams orientada a...",
+                    opciones: { A: "Asignar notas directas", B: "La analítica educativa basada en macrodatos de participación e interacción", C: "Enviar alertas de soporte técnico", D: "Realizar encuestas salariales" },
+                    correcta: "B", justificacion: "Insights recolecta de forma pasiva la actividad para facilitar la labor de supervisión y docencia."
+                },
+                {
+                    enunciado: "Para detectar aprendices con baja participación o entregas atrasadas revisas...",
+                    opciones: { A: "El almacenamiento de OneDrive", B: "La pestaña de analítica Insights", C: "Los comentarios de Planner", D: "El calendario de Outlook" },
+                    correcta: "B", justificacion: "Insights consolida de forma gráfica el estado de cumplimiento y participación académica del grupo."
+                },
+                {
+                    enunciado: "¿Qué afirmación define correctamente el alcance de Insights?",
+                    opciones: { A: "Insights califica los retos de los alumnos.", B: "Insights no califica, analiza el comportamiento y participación.", C: "Insights reemplaza las guías de aprendizaje.", D: "Insights controls la velocidad del procesador del computador." },
+                    correcta: "B", justificacion: "Es un panel analítico que agrupa tendencias, dejando la valoración cualitativa en manos del instructor."
+                },
+                {
+                    enunciado: "Entre los datos que Insights muestra de forma clara en sus gráficas se encuentra:",
+                    opciones: { A: "La participación en publicaciones, comentarios y reacciones de los canales", B: "Las contraseñas de las cuentas institucionales", C: "El historial de búsquedas en internet de los alumnos", D: "El estado financiero de la organización" },
+                    correcta: "A", justificacion: "Mide el nivel de actividad digital y conversación dentro de los linderos del equipo virtual."
+                },
+                {
+                    enunciado: "Revisar los datos de Insights semanalmente permite al instructor:",
+                    opciones: { A: "Reducir la memoria RAM del servidor", B: "Detectar de forma temprana estudiantes en riesgo de deserción o rezago académica", C: "Duplicar la cantidad de canales del curso", D: "Ocultar la pestaña de tareas" },
+                    correcta: "B", justificacion: "La analítica oportuna permite intervenciones preventivas antes de que el aprendiz pierda el hilo del curso."
+                },
+                {
+                    enunciado: "Una buena práctica con Insights es:",
+                    opciones: { A: "Usarlo exclusivamente como un mecanismo de castigo o control policivo", B: "Cruzar sus datos con observaciones reales y usarlo como apoyo pedagógico", C: "Borrar las métricas al iniciar el mes", D: "Restringir su visualización a los directores externos" },
+                    correcta: "B", justificacion: "Los datos sin contextualización humana pierden su poder; deben guiar la empatía y la mejora didáctica."
+                },
+                {
+                    enunciado: "Insights convierte los datos en:",
+                    opciones: { A: "Archivos ZIP comprimidos", B: "Acciones pedagógicas con base en evidencia", C: "Modelos de bases de datos análogas", D: "Fórmulas matemáticas complejas" },
+                    correcta: "B", justificacion: "Su fin es dotar al docente de argumentos objetivos para mejorar el diseño de retos y soporte."
+                },
+                {
+                    enunciado: "El uso de la analítica de aprendizaje en entornos virtuales respalda:",
+                    opciones: { A: "Las decisiones basadas en la intuición o subjetividad del supervisor", B: "Las decisiones pedagógicas soportadas en evidencias reales de interacción", C: "La eliminación de plataformas en la nube", D: "La reducción de canales temáticos" },
+                    correcta: "B", justificacion: "La toma de decisiones con datos mitiga sesgos y optimiza las rutas de acompañamiento virtual."
+                }
+            ],
+            6: [ // 6. Monitoreo Emocional y Socioemocional (Reflect)
+                {
+                    enunciado: "¿Cómo se define la herramienta 'Reflect' en el marco de Teams?",
+                    opciones: { A: "Un software de reconocimiento facial para control de asistencia.", B: "Una aplicación que humaniza el entorno digital promoviendo check-ins emocionales, autorreflexión y bienestar socioemocional.", C: "Un sistema de duplicación de planes Kanban.", D: "Un filtro de seguridad digital contra virus." },
+                    correcta: "B", justificacion: "Reflect complementa la analítica técnica con datos del ser, permitiendo monitorear el estrés y la motivación."
+                },
+                {
+                    enunciado: "Si se desea realizar una evaluación formativa del proceso de asimilación al cerrar un reto, ¿qué pregunta de Reflect es idónea?",
+                    opciones: { A: "¿Cuál es el artículo exacto de la ley laboral?", B: "¿Qué tan seguro te sientes con lo aprendido en esta misión?", C: "¿Cuántos megabytes pesa tu reporte final?", D: "¿Prefieres el Teletrabajo o el Trabajo Remoto?" },
+                    correcta: "B", justificacion: "Las escalas de sentimiento enfocadas en la seguridad de aprendizaje miden de forma cualitativa el impacto de la transferencia."
+                },
+                {
+                    enunciado: "Reflect permite realizar intervenciones pedagógicas oportunas sabiendo...",
+                    opciones: { A: "El estrato social", B: "Cómo se sienten emocionalmente los participantes", C: "La dirección IP de red", D: "El navegador preferido" },
+                    correcta: "B", justificacion: "Reflect humaniza el entorno capturando el clima socioemocional y los niveles de estrés del aula."
+                },
+                {
+                    enunciado: "La combinación estratégica ideal de analítica de comportamiento y emociones es...",
+                    opciones: { A: "Planner + OneDrive", B: "Insights (Qué hacen) + Reflect (Cómo se sienten)", C: "Outlook + SharePoint", D: "Canales + Calendario" },
+                    correcta: "B", justificacion: "Ambas herramientas proveen un diagnóstico integral, balanceando lo académico con lo humano."
+                },
+                {
+                    enunciado: "¿Qué elemento utiliza Reflect para facilitar la expresión emocional de forma visual?",
+                    opciones: { A: "Gráficas de barras de Excel", B: "El Monstruo de los Sentimientos o escalas visuales expresivas", C: "Tablas de datos tabulares", D: "Código de colores hexadecimales" },
+                    correcta: "B", justificacion: "El uso de avatares y escalas simplifica la identificación y el reporte de estados de ánimo."
+                },
+                {
+                    enunciado: "Implementar Reflect es especialmente valioso en:",
+                    opciones: { A: "Procesos 100% mecánicos industriales", B: "Cursos virtuales o entornos a distancia donde se pierde el contacto visual tradicional", C: "La configuración de bases de datos", D: "El despliegue de sitios en Netlify" },
+                    correcta: "B", justificacion: "Cierra la brecha de la distancia física, devolviendo al instructor la lectura del clima grupal."
+                },
+                {
+                    enunciado: "Un check-in emocional de Reflect al inicio de la semana sirve para:",
+                    opciones: { A: "Calificar la puntualidad del aprendiz", B: "Conocer la disposición anímica del equipo ante una nueva misión o carga académica", C: "Bloquear las entregas de tareas", D: "Validar la conexión de red LAN" },
+                    correcta: "B", justificacion: "Ayuda a tantear si el grupo se encuentra abrumado o motivado para encarar los objetivos planteados."
+                },
+                {
+                    enunciado: "Reflect fomenta en los aprendices el desarrollo de habilidades de:",
+                    opciones: { A: "Programación en Python", B: "Autoconocimiento, autorreflexión y regulación emocional", C: "Cálculo financiero avanzado", D: "Edición gráfica vectorial" },
+                    correcta: "B", justificacion: "Mirarse hacia adentro y nombrar la emoción ayuda a la madurez personal y el trabajo en equipo."
+                },
+                {
+                    enunciado: "A diferencia de las encuestas tradicionales, Reflect destaca por ser:",
+                    opciones: { A: "Larga y tediosa", B: "Ágil, visual, integrada a Teams y enfocada en el bienestar diario", C: "De carácter obligatorio y punitivo", D: "Oculta para el líder del equipo" },
+                    correcta: "B", justificacion: "Su diseño lúdico y rápido incrementa los niveles de respuesta sincera en la plataforma."
+                },
+                {
+                    enunciado: "Al incorporar Reflect, Teams pasa de ser una plataforma técnica a:",
+                    opciones: { A: "Un repositorio cerrado de archivos", B: "Un verdadero entorno humano de aprendizaje", C: "Un servidor de bases de datos local", D: "Un canal de mensajería comercial" },
+                    correcta: "B", justificacion: "La dimensión socioemocional dota de sentido humano al ecosistema tecnológico."
+                }
+            ],
+            7: [ // 7. Criterios Legales de Selección de Modalidad (Leyes Colombianas)
+                {
+                    enunciado: "Según la normativa colombiana, ¿en qué factor reside la decisión de asignar una modalidad no presencial?",
+                    opciones: { A: "En la preferencia o deseo individual expresado por el colaborador.", B: "En el cargo, estatus jerárquico o antigüedad dentro de la organización.", C: "En la naturaleza específica de la labor y su viabilidad técnica para medirse por entregables objetivos.", D: "En el dictamen exclusivo de la ARL." },
+                    correcta: "C", justificacion: "La ley colombiana establece que la modalidad se define analizando la tarea y sus evidencias objetivas, no las preferencias individuales."
+                },
+                {
+                    enunciado: "¿Cuáles son los 4 criterios básicos analizados en la matriz técnico-legal para clasificar una labor?",
+                    opciones: { A: "Interacción física, Dependencia del lugar, Nivel de supervisión y Medibilidad por resultados.", B: "Conexión a internet, Marca de PC, Edad del trabajador y Tipo de contrato.", C: "Ubicación geográfica, Horario, Canales de Teams y Etiquetas.", D: "Presupuesto, Políticas de ARL, Almacenamiento en nube y Kanban." },
+                    correcta: "A", justificacion: "Estos 4 pilares determinan la viabilidad y el umbral normativo óptimo para deslocalizar funciones."
+                },
+                {
+                    enunciado: "Si una labor de talento humano presenta un grado de interacción física 'Alto' (ej. firma presencial de contratos), su modalidad recomendada es:",
+                    opciones: { A: "Teletrabajo regular", B: "Modalidad Presencial", C: "Trabajo Remoto Flexible", D: "Diseño en Planner" },
+                    correcta: "B", justificacion: "La alta dependencia interactiva o de infraestructura física local inhabilita la deslocalización inmediata."
+                },
+                {
+                    enunciado: "Un proceso medible enteramente por entregables claros e información digitalizada es...",
+                    opciones: { A: "Inviable a distancia", B: "Candidato óptimo a Teletrabajo o Trabajo Remoto", C: "Riesgo biomecánico alto", D: "Exclusivo de Outlook" },
+                    correcta: "B", justificacion: "La medibilidad por productos y la autonomía digital viabilizan jurídicamente la deslocalización."
+                },
+                {
+                    enunciado: "La premisa central de las directrices organizacionales para la asignación de modalidades estipula:",
+                    opciones: { A: "La clave está en la preferencia del director.", B: "La clave no está en la persona, sino en la naturaleza de la labor.", C: "La clave reside en el horario histórico del centro.", D: "La clave es la versión del sistema Windows." },
+                    correcta: "B", justificacion: "Se evalúa técnicamente la tarea y sus flujos de información, no los deseos o el perfil subjetivo del colaborador."
+                },
+                {
+                    enunciado: "Si la labor demanda contacto físico directo y atención en ventanilla, el nivel de interacción se considera:",
+                    opciones: { A: "Bajo", B: "Medio", C: "Alto", D: "Irrelevante" },
+                    correcta: "C", justificacion: "La interacción directa con usuarios o manipulación física califica como un requerimiento alto de presencialidad."
+                },
+                {
+                    enunciado: "La viabilidad tecnológica se valida principalmente verificando que:",
+                    opciones: { A: "El trabajador posee redes sociales activas.", B: "La información esté digitalizada y existan herramientas para su seguimiento en la nube.", C: "Los servidores sean de marca local.", D: "No se utilicen canales en Teams." },
+                    correcta: "B", justificacion: "Garantizar insumos digitales y sistemas de control es requisito informático mínimo."
+                },
+                {
+                    enunciado: "Un nivel de supervisión enfocado puramente en entregables y productos finales se cataloga como:",
+                    opciones: { A: "Supervisión por proceso (Presencial)", B: "Supervisión baja o por resultados (Apta para trabajo a distancia)", C: "Control minutero de horario", D: "Auditoría de ventanilla física" },
+                    correcta: "B", justificacion: "El control por resultados otorga autonomía de ejecución, ideal para esquemas remotos o de teletrabajo."
+                },
+                {
+                    enunciado: "La matriz de decisión resume que una labor de naturaleza mixta (planeación virtual + ejecución física) corresponde a:",
+                    opciones: { A: "Esquema Presencial Rígido", B: "Trabajo Híbrido", C: "Teletrabajo Autónomo", D: "Trabajo Remoto Externo" },
+                    correcta: "B", justificacion: "Las tareas mixtas encuentran en el modelo híbrido el equilibrio operativo perfecto."
+                },
+                {
+                    enunciado: "Validar las condiciones de seguridad y salud en el trabajo (SST) para puestos no presenciales busca prevenir:",
+                    opciones: { A: "El cobro de licencias", B: "Riesgos biomecánicos, ergonómicos y afectaciones a la salud mental", C: "La duplicación de planes en Planner", D: "El envío de correos masivos" },
+                    correcta: "B", justificacion: "El amparo de SST es una obligación legal para mitigar peligros en entornos residenciales."
+                }
+            ],
+            8: [ // 8. Teletrabajo y Gestión de Procesos Continuos
+                {
+                    enunciado: "De acuerdo con la normativa, ¿cuál es una característica del Teletrabajo en Colombia?",
+                    opciones: { A: "Es un modelo informal.", B: "Representa un trabajo formal regulado, estable y planificado, con vinculación laboral directa.", C: "Se aplica únicamente a contratistas externos por prestación de servicios.", D: "Prohíbe el uso de tableros Planner." },
+                    correcta: "B", justificacion: "El teletrabajo se caracteriza por la estabilidad y el seguimiento de funciones permanentes con amparo contractual laboral directo."
+                },
+                {
+                    enunciado: "¿Cuál de las siguientes actividades de la gestión humana se clasifica típicamente como Teletrabajo?",
+                    opciones: { A: "Atención física en ventanilla.", B: "Gestión de nómina y control administrativo bajo procesos formales.", C: "Mantenimiento físico de servidores.", D: "Brigadista de emergencias." },
+                    correcta: "B", justificacion: "La administración de nómina y procesos continuos se adapta de forma idónea al teletrabajo estructurado."
+                },
+                {
+                    enunciado: "El riesgo principal del Teletrabajo si no se orienta a resultados es...",
+                    opciones: { A: "La pérdida de internet", B: "El exceso de control o burocratización del proceso", C: "La eliminación de carpetas", D: "El desuso de etiquetas" },
+                    correcta: "B", justificacion: "Monitorear procesos formales en exceso puede burocratizar o microgestionar el flujo digital."
+                },
+                {
+                    enunciado: "Bajo la modalidad de Teletrabajo, el tipo de vinculación con la organización es de carácter:",
+                    opciones: { A: "Prestador de servicios externo o freelance", B: "Empleado directo con relación laboral formal", C: "Contratista civil comercial", D: "Asesor temporal por horas" },
+                    correcta: "B", justificacion: "El teletrabajo regular implica subordinación laboral y nexo directo con la planta de la entidad."
+                },
+                {
+                    enunciado: "Para el teletrabajador, el rol de Microsoft Planner se enfoca en el:",
+                    opciones: { A: "Control operativo del avance de sus funciones por proceso continuo", B: "Diseño gráfico de volantes de pago", C: "Bloqueo de accesos a la red LAN", D: "Envío de actas físicas firmadas" },
+                    correcta: "A", justificacion: "Planner asume el control del mapa de procesos permanentes del puesto deslocalizado."
+                },
+                {
+                    enunciado: "Una de las grandes ventajas organizacionales del teletrabajo formal bien implementado es:",
+                    opciones: { A: "Evitar el pago de la seguridad social obligatoria", B: "Garantizar la continuidad de los procesos administrativos mediante flujos digitales trazables", C: "Eliminar las reuniones de comités", D: "Reducir la velocidad de los entregables" },
+                    correcta: "B", justificacion: "La digitalización de funciones continuas estabiliza la operación institucional extra-sede."
+                },
+                {
+                    enunciado: "Legalmente, un acuerdo de teletrabajo requiere ser formalizado mediante:",
+                    opciones: { A: "Un pacto verbal informal entre compañeros", B: "Un contrato laboral o un otrosí escrito con condiciones explícitas", C: "Un correo electrónico simple de felicitación", D: "Un comentario cerrado en una tarea de Planner" },
+                    correcta: "B", justificacion: "La ley colombiana exige la constancia documental del acuerdo de teletrabajo para su validez legal."
+                },
+                {
+                    enunciado: "El seguimiento del trabajo en el modelo de teletrabajo se caracteriza por ser:",
+                    opciones: { A: "Subjetivo y esporádico", B: "Operativo y funcional, midiendo el curso y desarrollo del proceso", C: "Exclusivamente visual por cámara encendida", D: "Inexistente debido a la distancia" },
+                    correcta: "B", justificacion: "Se enfoca en la marcha de los procedimientos de la organización mapeados en el entorno digital."
+                },
+                {
+                    enunciado: "En el teletrabajo, los productos típicos a entregar suelen configurarse como:",
+                    opciones: { A: "Códigos de software e infografías semanales", B: "Informes de gestión, registros, actas, reportes periódicos y soportes de procesos", C: "Planos arquitectónicos a mano", D: "Correspondencia física sellada" },
+                    correcta: "B", justificacion: "Corresponden a los entregables documentales típicos de funciones administrativas permanentes."
+                },
+                {
+                    enunciado: "El derecho a la desconexión laboral en el teletrabajo implica que:",
+                    opciones: { A: "El trabajador puede apagar el PC en horario laboral ordinario sin avisar.", B: "Se deben respetar los linderos del descanso, jornada máxima legal y vida familiar del colaborador.", C: "No se pueden usar canales de Teams para avisos.", D: "Se cancelan los accesos a OneDrive de forma permanente." },
+                    correcta: "B", justificacion: "Garantizar el descanso efectivo y limitar las fronteras horarias es un derecho amparado por la ley colombiana."
+                }
+            ],
+            9: [ // 9. Trabajo Remoto y Gestión por Entregables Autónomos
+                {
+                    enunciado: "A diferencia del Teletrabajo, el 'Trabajo Remoto' se define como:",
+                    opciones: { A: "Un modelo rígido controlado por cámaras web.", B: "Una modalidad de ejecución orientada a la entrega de actividades, proyectos o productos específicos, donde no necesariamente hay vínculo laboral directo.", C: "El trabajo que se realiza dentro del centro.", D: "Una excepción aplicable solo a directivos." },
+                    correcta: "B", justificacion: "El trabajo remoto prioriza el producto final o entregable específico por encima del control estricto de procesos continuos."
+                },
+                {
+                    enunciado: "¿Qué principio sintetiza la filosofía del Trabajo Remoto?",
+                    opciones: { A: "Lo importante es marcar tarjeta a las 7:00 a. m.", B: "No importa dónde se ejecute la labor, lo que importa es el resultado.", C: "El control visual diario en sede garantiza la calidad.", D: "Toda la información debe custodiarse en archivadores físicos." },
+                    correcta: "B", justificacion: "El trabajo remoto se centra en la deslocalización absoluta basada en entregables con alta autonomía operativa."
+                },
+                {
+                    enunciado: "Un ejemplo típico de actividad para Trabajo Remoto en Talento Humano es:",
+                    opciones: { A: "Vigilancia de instalaciones", B: "Entrevistas virtuales y procesos de selección en línea", C: "Entrega física de dotación", D: "Firma física de libros de actas" },
+                    correcta: "B", justificacion: "Los procesos de selección no presenciales aprovechan las TIC de forma autónoma y por proyecto específico."
+                },
+                {
+                    enunciado: "La relación contractual común en el Trabajo Remoto enfocado a proyectos específicos suele ser:",
+                    opciones: { A: "Contrato laboral de dependencia tradicional con horario minutero", B: "Contrato civil, comercial o por prestación de servicios profesionales", C: "Nombramiento provisional estatutario rígido", D: "Pacto informal de palabra" },
+                    correcta: "B", justificacion: "Al centrarse en productos específicos, es idóneo para consultores, contratistas o proveedores autónomos."
+                },
+                {
+                    enunciado: "En la gestión remota, la unidad de control operativa pasa de los procedimientos a:",
+                    opciones: { A: "La asistencia visual diaria", B: "Las tareas, actividades puntuales o productos finales entregados", C: "La cantidad de correos enviados en Outlook", D: "Los check-ins de Reflect" },
+                    correcta: "B", justificacion: "Se evalúa la conformidad y calidad del entregable recibido frente a los términos pactados."
+                },
+                {
+                    enunciado: "Microsoft Planner sirve al Trabajo Remoto como una herramienta de:",
+                    opciones: { A: "Control minutero de horas silla", B: "Gestión visual y seguimiento ágil de entregables y tareas por proyecto", C: "Almacenamiento masivo de videos MP4", D: "Base de datos SQL cerrada" },
+                    correcta: "B", justificacion: "Permite ver el estado de avance de los hitos y productos pactados de forma transparente."
+                },
+                {
+                    enunciado: "La pérdida de trazabilidad en el trabajo remoto ocurre principalmente cuando:",
+                    opciones: { A: "Se usan etiquetas de colores en Planner.", B: "No se cargan las evidencias objetivas de los productos en las plataformas de la nube.", C: "Se trabaja desde ciudades costeras.", D: "Se chatea por Teams en canales temáticos." },
+                    correcta: "B", justificacion: "En entornos virtuales, el trabajo que no cuenta con un soporte documental o registro digital, operativamente no existe."
+                },
+                {
+                    enunciado: "Son productos típicos del trabajo remoto enfocado a talento humano:",
+                    opciones: { A: "Planillas de asistencia física firmadas con esfero", B: "Documentos finales, diseños de perfiles, dashboards de indicadores o informes específicos aprobados", C: "Archivadores de carpetas de cartón", D: "Maquetas físicas de puestos de trabajo" },
+                    correcta: "B", justificacion: "Representan productos intelectuales o técnicos digitales terminados y listos para su uso institucional."
+                },
+                {
+                    enunciado: "La autonomía operativa en el trabajo remoto implica que el colaborador:",
+                    opciones: { A: "Can alter metas de calidad sin consultar.", B: "Gestiona de forma libre su tiempo y espacio para cumplir con los entregables acordados.", C: "No tiene supervisión de ningún tipo.", D: "Está exento de usar el ecosistema de Microsoft 365." },
+                    correcta: "B", justificacion: "La flexibilidad horaria es contraprestación directa de la responsabilidad por cumplimiento de metas específicas."
+                },
+                {
+                    enunciado: "Para auditar la efectividad de un contrato de trabajo remoto se revisa:",
+                    opciones: { A: "La minuta de entrada del vigilante de la sede", B: "Los tableros de Planner, evidencias cargadas en SharePoint y la calidad del producto final", C: "La marca del módem de internet", D: "Los estados de ánimo históricos de Reflect" },
+                    correcta: "B", justificacion: "Los registros digitales e hitos completados constituyen el soporte técnico del cumplimiento contractual."
+                }
+            ],
+            10: [ // 10. Trabajo Híbrido, Metodología Kanban y Filosofía Ágil
+                {
+                    enunciado: "¿Cómo opera la modalidad de 'Trabajo Híbrido' descrita en las guías?",
+                    opciones: { A: "Obliga a laborar el doble de la jornada legal ordinaria.", B: "Es un modelo de gestión estratégico que combina teletrabajo y trabajo remoto según las actividades.", C: "Elimina por completo el uso de SharePoint.", D: "Es exclusivo para contratistas externos de desarrollo." },
+                    correcta: "B", justificacion: "El modelo híbrido integra de forma flexible procesos y entregables combinando presencialidad y virtualidad."
+                },
+                {
+                    enunciado: "Al implementar la metodología Kanban a través de Microsoft Planner, ¿qué representan los 'Buckets'?",
+                    opciones: { A: "Los nombres de los integrantes.", B: "Las columnas visuales fijas que estructuran el flujo (Actividades asignadas, En ejecución, En validación, Cerradas).", C: "Las fechas límites de la agenda.", D: "Las contraseñas de seguridad digital." },
+                    correcta: "B", justificacion: "Los buckets mapean el flujo continuo del trabajo en Kanban. Una tarea se mueve según su avance real."
+                },
+                {
+                    enunciado: "La metodología Kanban tiene sus raíces históricas en la empresa...",
+                    opciones: { A: "Microsoft Corporation", B: "Toyota (Taiichi Ohno - 1940)", C: "Ford Motor Company", D: "Google Active Directory" },
+                    correcta: "B", justificacion: "Kanban nació en la manufactura japonesa como un control de flujo altamente visual basado en señales."
+                },
+                {
+                    enunciado: "En Kanban, el término WIP (Work in Progress) significa de forma estricta:",
+                    opciones: { A: "Trabajo totalmente terminado", B: "Límite de tareas permitidas en ejecución simultánea", C: "Fechas de vencimiento de Outlook", D: "Archivos guardados en OneDrive" },
+                    correcta: "B", justificacion: "Limitar el WIP evita la saturación de los colaboradores y saca a la luz cuellos de botella del proceso."
+                },
+                {
+                    enunciado: "En la lógica Kanban de Planner, el movimiento de una tarea entre buckets se realiza basado en:",
+                    opciones: { A: "El paso de los días del calendario automáticamente", B: "El logro de resultados y cumplimiento de evidencias del checklist", C: "El arbitrio o humor diario del supervisor", D: "El tamaño en bytes del archivo adjunto" },
+                    correcta: "B", justificacion: "Las tarjetas se arrastran al siguiente estado cuando el entregable o hito intermedio ha sido validado."
+                },
+                {
+                    enunciado: "Un tablero Kanban de Planner permite responder la siguiente pregunta clave del líder:",
+                    opciones: { A: "¿A qué hora encendió el computador el colaborador?", B: "¿En qué etapa del proceso se está acumulando el trabajo o existe un cuello de botella?", C: "¿Cuántas gigabytes quedan libres en SharePoint?", D: "¿Cuál es el correo institucional del aprendiz?" },
+                    correcta: "B", justificacion: "Al ser un sistema visual, la acumulación inusual de tarjetas en una columna delata fallos de fluidez operativa."
+                },
+                {
+                    enunciado: "La asignación grupal de una tarea en Planner (ej: varios responsables en una sola tarjeta) representa:",
+                    opciones: { A: "Un error de configuración del software", B: "Un enfoque ágil válido donde coexisten varios responsables para un resultado común", C: "Una violación al derecho de desconexión laboral", D: "Un mecanismo para triplicar las notas numéricas" },
+                    correcta: "B", justificacion: "El trabajo colaborativo agrupa capacidades en torno a un único hito o entregable compartido en el tablero."
+                },
+                {
+                    enunciado: "En la rutina de seguimiento Kanban en Planner, el estado de revisión se denomina típicamente:",
+                    opciones: { A: "Actividades asignadas", B: "En validación", C: "Actividades cerradas", D: "Borradores OneDrive" },
+                    correcta: "B", justificacion: "Es el bucket destinado al control de calidad e inspección de las evidencias antes del cierre definitivo."
+                },
+                {
+                    enunciado: "Completar los elementos de la lista de comprobación (checklist) de una tarea en Planner causa que:",
+                    opciones: { A: "Se borre la tarea automáticamente de la interfaz.", B: "Se incremente el porcentaje visual de avance real de la tarjeta Kanban.", C: "Se envíe un correo de felicitación firmado por el director.", D: "Se altere el nombre del canal temático." },
+                    correcta: "B", justificacion: "El checklist computa el progreso interno y pormenorizado del reto asignado al colaborador."
+                },
+                {
+                    enunciado: "La gran ventaja de usar la 'Vista de Gráficos' de Planner en una reunión es:",
+                    opciones: { A: "Poder editar el código fuente HTML/CSS del sitio.", B: "Obtener un informe visual rápido del estado de las tareas y la distribución de carga por usuario.", C: "Cambiar las claves de red del equipo.", D: "Monitorear las escalas emocionales de Reflect." },
+                    correcta: "B", justificacion: "Los gráficos traducen la data tabular en métricas visuales de rendimiento y balance de cargas de trabajo."
+                }
+            ]
+        };
+
+        // Llenado alternativo del banco para mantener el motor sin textos de relleno o validación espurios
+        const temasAdicionales = [
+            { cat: 1, e: "El procesamiento oculto de metadatos y la sincronización se ejecutan en el...", o: ["Frontend operativo", "Backend del ecosistema", "Muro unificado de Teams", "Calendario de actividades"], c: "B", j: "El backend gestiona de manera transparente el procesamiento y la conexión oculta de la información organizativa." },
+            { cat: 1, e: "En el entorno M365, las herramientas trabajan de forma integrada conformando un...", o: ["Servidor de red local", "Sistema conectado que centraliza el flujo de datos", "Disco duro externo", "Software comercial aislado"], c: "B", j: "La interconexión nativa permite que la información fluya de manera continua y centralizada." },
+            { cat: 2, e: "Al usar Teams como LMS, ¿qué componente representa el espacio estructurado del curso?", o: ["Un chat grupal", "Un Equipo o Ficha académica", "Un archivo de texto local", "La bandeja de entrada"], c: "B", j: "El Equipo unifica a los aprendices como miembros y al instructor como propietario de la ficha." },
+            { cat: 2, e: "Es el canal inamovible creado automáticamente en todo nuevo equipo:", o: ["Canal Contenidos", "Canal General", "Canal Soporte", "Canal Actividades"], c: "B", j: "El canal General centraliza avisos oficiales y es la raíz nativa estructural del equipo." },
+            { cat: 3, e: "Todo documento compartido que vive en los canales de Teams reside en el backend en...", o: ["El almacenamiento de la PC", "SharePoint como base documental", "La bandeja de Outlook", "La memoria RAM"], c: "B", j: "Teams expone en el frontend los archivos que SharePoint aloja y organiza de forma segura." },
+            { cat: 3, e: "El espacio personal para archivos individuales antes de ser publicados al grupo es:", o: ["SharePoint Institucional", "Microsoft OneDrive", "Microsoft Planner Colectivo", "Muro de canales"], c: "B", j: "OneDrive provee un entorno de almacenamiento personal óptimo para borradores individuales." },
+            { cat: 4, e: "Los recordatorios de tiempos límites de Planner se integran de forma nativa con:", o: ["Microsoft Power BI", "Microsoft Outlook para alertas de agenda", "SharePoint central", "Reflect unificado"], c: "B", j: "Outlook centraliza las alertas de agenda y tiempos límites del ecosistema." },
+            { cat: 4, e: "Para consolidar subtareas e hitos internos dentro de una actividad de Planner usas...", o: ["Un nuevo bucket", "La Lista de comprobación o Checklist", "Un canal privado", "Un correo saliente"], c: "B", j: "El checklist mide el progreso real e interno de cada tarea del tablero." },
+            { cat: 5, e: "Insights es una herramienta embebida en Teams diseñada para...", o: ["Asignar notas numéricas", "La analítica educativa de participación", "Enviar reportes de soporte", "Realizar encuestas externas"], c: "B", j: "Insights analiza comportamientos digitales para facilitar decisiones pedagógicas." },
+            { cat: 5, e: "Para detectar aprendices con baja participación o entregas atrasadas revisas...", o: ["El almacenamiento personal", "La pestaña analítica Insights", "Los comentarios de Planner", "El calendario unificado"], c: "B", j: "Insights consolida de forma gráfica el estado de actividad del grupo." },
+            { cat: 6, e: "Reflect permite realizar intervenciones oportunas conociendo...", o: ["El estrato social", "Cómo se sienten emocionalmente los participantes", "La dirección IP de red", "El navegador preferido"], c: "B", j: "Reflect humaniza el LMS capturando el clima socioemocional del aula." },
+            { cat: 6, e: "La combinación estratégica de analítica de comportamiento y emociones es...", o: ["Planner + OneDrive", "Insights junto con Reflect", "Outlook + SharePoint", "Canales + Calendario"], c: "B", j: "Ambas herramientas proveen un diagnóstico integral, balanceando lo académico y lo humano." },
+            { cat: 7, e: "Si una labor exige uso continuo de laboratorios locales de la sede, su dependencia es...", o: ["Baja", "Alta requiriendo presencialidad", "Nula", "Digitalizada"], c: "B", j: "La dependencia estricta de infraestructura física local obliga al entorno presencial." },
+            { cat: 7, e: "Un proceso medible enteramente por entregables objetivos e información digitalizada es...", o: ["Inviable a distancia", "Candidato idóneo a Teletrabajo o Remoto", "Riesgo ergonómico alto", "Exclusivo de Outlook"], c: "B", j: "La medibilidad por productos y la autonomía digital viabilizan jurídicamente la deslocalización." },
+            { cat: 8, e: "El Teletrabajo se fundamenta esencialmente en un modelo con:", o: ["Contratos verbales cortos", "Vinculación laboral directa y procesos permanentes", "Prestación de servicios independientes", "Ausencia de políticas internas"], c: "B", j: "El teletrabajo regula funciones permanentes bajo una relación de dependencia laboral directa." },
+            { cat: 8, e: "El riesgo principal del Teletrabajo si no se orienta a resultados es...", o: ["La pérdida de internet", "El exceso de control o burocratización del proceso", "La eliminación de carpetas", "El desfase de etiquetas"], c: "B", j: "Monitorear procesos en exceso puede burocratizar o microgestionar el flujo digital." },
+            { cat: 9, e: "El Trabajo Remoto se orienta principalmente a la gestión de...", o: ["Horarios minuteros estrictos", "Actividades específicas, proyectos o productos", "Ventanillas de correspondencia", "Asistencia física continua"], c: "B", j: "En lo remoto prima la entrega puntual del producto sobre el control de la jornada." },
+            { cat: 9, e: "Un ejemplo típico de actividad para Trabajo Remoto en Talento Humano es...", o: ["Vigilancia de sedes", "Entrevistas virtuales y selección en línea", "Entrega física de dotación", "Firma de actas físicas"], c: "B", j: "Los procesos de selección no presenciales aprovechan las TIC de forma autónoma." },
+            { cat: 10, e: "La metodología Kanban tiene sus raíces históricas en...", o: ["Microsoft Corporation", "Toyota por Taiichi Ohno", "Ford Motor Company", "Google Active Directory"], c: "B", j: "Kanban nació en la manufactura japonesa como un control de flujo visual." },
+            { cat: 10, e: "En Kanban, el término WIP significa de forma estricta:", o: ["Trabajo totalmente terminado", "Límite de tareas permitidas en ejecución simultánea", "Fechas de vencimiento de Outlook", "Archivos guardados en OneDrive"], c: "B", j: "Limitar el WIP evita la saturación de los colaboradores en los tableros." }
+        ];
+
+        // Mapeo unificado sin textos incidentales de variantes de desarrollo
+        for (let i = 1; i <= 10; i++) {
+            let base = bancoPreguntasCompleto[i];
+            temasAdicionales.forEach(ta => {
+                if (ta.cat === i) {
+                    let optsObj = {};
+                    let letras = ['A', 'B', 'C', 'D'];
+                    ta.o.forEach((optText, idx) => { optsObj[letras[idx]] = optText; });
+                    base.push({ enunciado: ta.e, opciones: optsObj, correcta: ta.c, justificacion: ta.j });
+                }
+            });
+            // Replicación de seguridad limpia por si el motor aleatorio requiere alternancia simétrica pura
+            while (base.length < 10) {
+                let copiaLimpia = JSON.parse(JSON.stringify(base[base.length % base.length]));
+                base.push(copiaLimpia);
+            }
+        }
+
+        let preguntasSeleccionadasGlobal = [];
+
+        function inicializarSondeoAleatorio() {
+            preguntasSeleccionadasGlobal = [];
+            const contenedor = document.getElementById('bloquePreguntasDinamicas');
+            contenedor.innerHTML = "";
+
+            for (let i = 1; i <= 10; i++) {
+                const listaCategoria = bancoPreguntasCompleto[i];
+                const indiceAleatorio = Math.floor(Math.random() * listaCategoria.length);
+                const preguntaObjeto = listaCategoria[indiceAleatorio];
+
+                preguntasSeleccionadasGlobal.push({ idCategoria: i, datos: preguntaObjeto });
+
+                let htmlPregunta = `
+                    <div class="bloque-pregunta">
+                        <div class="enunciado"><strong>Pregunta ${i}:</strong> ${preguntaObjeto.enunciado}</div>
+                        <div class="opciones-contenedor">
+                `;
+
+                for (const letra in preguntaObjeto.opciones) {
+                    htmlPregunta += `
+                        <label class="opcion-respuesta">
+                            <input type="radio" name="pregunta_${i}" value="${letra}" required>
+                            <strong>${letra}.</strong> &nbsp; ${preguntaObjeto.opciones[letra]}
+                        </label>
+                    `;
+                }
+
+                htmlPregunta += `</div></div>`;
+                contenedor.insertAdjacentHTML('beforeend', htmlPregunta);
+            }
+        }
+
+        function evaluarSondeo(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombreUsuario').value.trim();
+            let respuestasCorrectas = 0;
+            let htmlReporteDetallado = "";
+
+            preguntasSeleccionadasGlobal.forEach((p, index) => {
+                const numeroPregunta = index + 1;
+                const seleccionadaNode = document.querySelector(`input[name="pregunta_${numeroPregunta}"]:checked`);
+                const respuestaUsuario = seleccionadaNode ? seleccionadaNode.value : "Sin responder";
+                const esCorrecta = (respuestaUsuario === p.datos.correcta);
+
+                if (esCorrecta) respuestasCorrectas++;
+
+                htmlReporteDetallado += `
+                    <div class="item-pdf-resultado">
+                        <p style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">${numeroPregunta}. ${p.datos.enunciado}</p>
+                        <p style="margin: 0; font-size: 13px; color: #444;"><strong>Su respuesta:</strong> ${respuestaUsuario} - ${p.datos.opciones[respuestaUsuario] || ''}</p>
+                        <p style="margin: 2px 0; font-size: 13px; color: #2c8200;"><strong>Respuesta correcta oficial:</strong> ${p.datos.correcta} - ${p.datos.opciones[p.datos.correcta]}</p>
+                        <div class="badge-resultado ${esCorrecta ? 'badge-correcto' : 'badge-incorrecto'}">
+                            ${esCorrecta ? '✓ CUMPLE - CONOCIMIENTO VALIDADO' : '✗ REQUIERE REVISIÓN DE GUÍA'}
+                        </div>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #555; font-style: italic;"><strong>Sustento Técnico:</strong> ${p.datos.justificacion}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('metaEvaluado').innerHTML = `<strong>Evaluado / Aprendiz:</strong> ${nombre}`;
+            document.getElementById('metaFecha').textContent = `Fecha de ejecución del diagnóstico: ${new Date().toLocaleString('es-CO')}`;
+            document.getElementById('metaPuntaje').innerHTML = `<strong>Resultado Final:</strong> ${respuestasCorrectas} / 10 puntos posibles (${(respuestasCorrectas / 10) * 100}%)`;
+
+            document.getElementById('cuerpoResultadosPDF').innerHTML = htmlReporteDetallado;
+
+            // Transición limpia de pantallas
+            document.getElementById('formularioSondeo').style.display = 'none';
+            document.getElementById('cabezote').style.display = 'none';
+            document.getElementById('zona-reporte-pdf').style.display = 'block';
+            document.getElementById('btnDescargarPDF').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function generarDocumentoPDF() {
+            const elemento = document.getElementById('zona-reporte-pdf');
+            const nombreParticipante = document.getElementById('nombreUsuario').value.replace(/\s+/g, '_');
+
+            const opciones = {
+                margin: [20, 15, 20, 15],
+                filename: `Sondeo_Previo_${nombreParticipante}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, logging: false, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opciones).from(elemento).save().then(() => {
+                alert("¡Su acta oficial de conocimientos previos ha sido generada y descargada exitosamente!");
+            });
+        }
+
+        window.onload = inicializarSondeoAleatorio;
+    </script>
+</body>
+
+</html>
