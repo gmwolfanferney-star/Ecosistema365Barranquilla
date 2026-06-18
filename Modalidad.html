@@ -214,10 +214,6 @@
             <label for="inputCargo">Cargo</label>
             <input type="text" id="inputCargo" placeholder="Escriba el cargo aquí...">
         </div>
-        <div class="campo-grupo">
-            <label for="inputArea">Área</label>
-            <input type="text" id="inputArea" placeholder="Escriba el área aquí...">
-        </div>
     </div>
 
     <button id="btnHabilitar" class="btn-principal" onclick="validarEIniciar()">Habilitar Checklist</button>
@@ -365,9 +361,8 @@
 
         function validarEIniciar() {
             const cargo = document.getElementById('inputCargo').value.trim();
-            const area = document.getElementById('inputArea').value.trim();
-            if (!cargo || !area) {
-                alert("Por favor, ingrese el Cargo y el Área antes de habilitar el checklist.");
+            if (!cargo) {
+                alert("Por favor, ingrese el Cargo antes de habilitar el checklist.");
                 return;
             }
             // Oculta los elementos del menú inicial
@@ -377,7 +372,6 @@
 
             // Guardar en metadatos
             metadatos.cargo = cargo;
-            metadatos.area = area;
 
             generarTablasEstructuradas();
         }
@@ -478,7 +472,6 @@
             let infoGeneralHtml = `
                 <div style="font-size: 13.5px; line-height: 1.5; margin-bottom: 15px;">
                     <p style="margin: 3px 0;"><strong>Cargo:</strong> ${metadatos.cargo}</p>
-                    <p style="margin: 3px 0;"><strong>Área:</strong> ${metadatos.area}</p>
                     <p style="margin: 3px 0;"><strong>Fecha de evaluación:</strong> ${metadatos.fecha}</p>
                 </div>
             `;
@@ -517,7 +510,6 @@
         function reiniciarEvaluacion() {
             document.getElementById('checklistForm').reset();
             document.getElementById('inputCargo').value = '';
-            document.getElementById('inputArea').value = '';
             document.getElementById('reporte-pdf').style.display = 'none';
             document.getElementById('btnDescargarPDF').style.display = 'none';
             document.getElementById('btnReiniciar').style.display = 'none';

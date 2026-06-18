@@ -58,11 +58,11 @@
             top: 16px;
             z-index: 30;
             display: grid;
-            grid-template-columns: 72px minmax(0, 1fr);
+            grid-template-columns: 56px minmax(0, 1fr);
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 24px;
-            padding: 12px 20px;
+            padding: 8px 20px;
             background: var(--surface);
             border-radius: 20px;
             box-shadow: var(--shadow);
@@ -73,15 +73,15 @@
         }
 
         .logo {
-            width: 72px;
-            height: 72px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, rgba(32, 201, 151, 0.95), rgba(16, 143, 118, 0.95));
-            border-radius: 16px;
+            border-radius: 12px;
             display: grid;
             place-items: center;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(32, 201, 151, 0.25);
-            padding: 6px;
+            padding: 4px;
             transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.25s, filter 0.25s;
             cursor: pointer;
         }
@@ -91,8 +91,8 @@
             height: 100%;
             object-fit: contain;
             display: block;
-            max-width: 68px;
-            max-height: 68px;
+            max-width: 52px;
+            max-height: 52px;
         }
 
         .logo:hover {
@@ -322,6 +322,14 @@
             margin-top: 14px;
             padding: 10px 18px;
             font-size: 0.9rem;
+        }
+
+        .section-sesiones .session-box.survey-box {
+            padding: 12px 24px;
+        }
+
+        .section-sesiones .session-box.survey-box .motion-button {
+            margin-top: 0;
         }
 
         .section-sesiones .session-list {
@@ -659,11 +667,14 @@
                                 <div class="dropdown-content">
                                     <a href="#sesion-0">Sesión No 0</a>
                                     <a href="#sesion-1">Sesión No 1</a>
-                                    <a href="#sesion-2">Sesión No 2</a>
-                                    <a href="#sesion-3">Sesión No 3</a>
-                                    <a href="#sesion-4">Sesión No 4</a>
-                                    <a href="#sesion-5">Sesión No 5</a>
-                                    <a href="#sesion-6">Sesión No 6</a>
+                                    <a href="#sesion-2">Visita GECELCA</a>
+                                    <a href="#sesion-3">Sesión 2</a>
+                                    <a href="#sesion-4">Experiencias Tecnoglass y Globa</a>
+                                    <a href="#sesion-5">Sesión No 3</a>
+                                    <a href="#sesion-6">Sesión 4</a>
+                                    <a href="#sesion-7">Visita ATLANTIC QI</a>
+                                    <a href="#sesion-8">Sesión No 5</a>
+                                    <a href="#sesion-9">Sesión No 6</a>
                                 </div>
                             </div>
                             <a id="nav-convocatoria" href="CRONOGRAMA_EDT_TRANSF_TAL_HUMANO_G1.pdf" target="_blank"
@@ -707,18 +718,18 @@
             <div class="session-box" id="sesion-0">
                 <p class="session-highlight"><strong>Sesión No 0: Introducción</strong></p>
                 <p>¡Bienvenidos al curso sobre la transformación de la gestión del talento humano en esquemas de trabajo
-                    flexible con microsoft 365! A lo largo de esta formación, exploraremos cómo el ecosistema de
-                    Microsoft 365 opera como un sistema interconectado, utilizando Microsoft Teams como aula virtual
-                    (LMS) y frontend principal para centralizar la comunicación y las actividades. Aprenderán el flujo
+                    flexible con microsoft 365! exploraremos diferentes modalidades de trabajo haciendo énfasis en
+                    Teletrabajo, Trabajo Hibrido y Trabajo Remoto, cómo el ecosistema de Microsoft 365 opera como un
+                    sistema interconectado, utilizando Microsoft Teams como eje central de este sistema y el frontend
+                    siendo el principal elemento para centralizar la comunicación y las actividades. Veremos el flujo
                     correcto de la información en el backend, donde SharePoint se consolida como el repositorio oficial
                     del grupo y OneDrive como el espacio de preparación personal. Además, implementaremos la metodología
-                    Kanban a través de Microsoft Planner, organizando el trabajo en tableros visuales para medir el
-                    avance por entregables y evitar cuellos de botella. Mediante herramientas como Insights y Reflect,
-                    aprenderán a analizar la participación y el bienestar socioemocional de sus equipos. Finalmente,
-                    conectaremos esta infraestructura tecnológica con la gestión estratégica de Talento Humano;
-                    analizaremos los criterios de interacción, supervisión y medibilidad para determinar de forma
-                    técnico-legal si una labor debe ejecutarse mediante Teletrabajo, Trabajo Remoto o un modelo
-                    estratégico de Trabajo Híbrido. ¡Aprovechen al máximo este entorno de aprendizaje!</p>
+                    Kanban y la llevaremos a Microsoft Planner, organizando el trabajo en tableros visuales para medir
+                    el
+                    avance por entregables y evitar cuellos de botella.
+                    <br>
+                    ¡Aprovechen al máximo este entorno de aprendizaje!
+                </p>
                 <a class="download-button motion-button"
                     style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-top: 14px;"
                     href="Sondeo.html" target="_blank" rel="noopener noreferrer">Sondeo</a>
@@ -728,8 +739,9 @@
                     target="_blank" rel="noopener noreferrer">Cargar</a>
             </div>
             <div class="session-box" id="sesion-1">
-                <p class="session-highlight"><strong>Sesión 1: Modalidades</strong></p>
-                <p>La modalidad laboral más adecuada (teletrabajo, trabajo remoto o híbrido) se define mediante una
+                <p class="session-highlight"><strong>Sesión 1: Generalidades</strong></p>
+                <p>En esta sesión veremos la modalidad laboral más adecuada (teletrabajo, trabajo remoto o híbrido) se
+                    define mediante una
                     evaluación técnica de las funciones del cargo, considerando aspectos como la necesidad de
                     interacción presencial, la medición por resultados y la disponibilidad tecnológica. Esta asignación
                     se realiza en estricto cumplimiento del marco legal vigente en Colombia, el cual regula de manera
@@ -742,27 +754,23 @@
                     target="_blank" rel="noopener noreferrer">Notion</a>
                 <a class="download-button motion-button"
                     style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-left: 8px;"
-                    href="Modalidad.html" target="_blank" rel="noopener noreferrer">Modalidad</a>
-            </div>
-            <div class="session-box" id="sesion-2">
-                <p class="session-highlight"><strong>Sesión No 2: Kanban, Rúbrica y Ejercicios</strong></p>
-                <p>Las metodologías ágiles, derivadas del enfoque Lean enfocado en optimizar el valor, abarcan marcos
-                    diversos como Scrum, Kanban, ScrumBan y SAFe para mejorar la eficiencia organizacional.
-                    Específicamente, Kanban gestiona el trabajo de manera visual mediante un flujo continuo de tareas en
-                    tableros, identificando cuellos de botella para elevar la productividad. Al implementarse en
-                    Microsoft Planner, el flujo se estructura transformando los buckets en columnas de progreso y las
-                    tareas en tarjetas Kanban con responsables específicos. El avance real de cada actividad se controla
-                    a través de checklists internos, comentarios e históricos y archivos adjuntos como evidencias
-                    digitales del cumplimiento. Este seguimiento visual, centralizado en canales de Microsoft Teams,
-                    facilita una rutina ágil de supervisión basada en entregables en lugar de control de horarios.
-                    Finalmente, la calidad en la planeación y la correcta adopción del modelo se miden técnicamente
-                    mediante una rúbrica de evaluación institucional.</p>
+                    href="https://sena4-my.sharepoint.com/:f:/g/personal/fguevara_sena_edu_co/IgBRUYPv0TaDToIgPtgIb6JfAU7legBG3m1bTZbjEI1v6ss?e=ybY8xg"
+                    target="_blank" rel="noopener noreferrer">Ejercicios</a>
                 <a class="download-button motion-button"
-                    href="https://prairie-dingo-760.notion.site/Kanban-Ejercicios-Planner-3720f0fb6f4a80e1ba83fafbdd16f0e6"
-                    target="_blank" rel="noopener noreferrer">Notion</a>
+                    style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-left: 8px;"
+                    href="Modalidad.html" target="_blank" rel="noopener noreferrer">Modalidad</a>
+                <a class="download-button motion-button"
+                    style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-left: 8px;"
+                    href="https://forms.cloud.microsoft/Pages/DesignPageV2.aspx?prevorigin=shell&origin=NeoPortalPage&subpage=design&id=gcPCyy4vk02R0VBskxas58B7ILNl_ddCoM3qf9UMMVVUM0NVNjM1RVkwSE1VU0FKTlpRUDdXS05GQi4u"
+                    target="_blank" rel="noopener noreferrer">Cargar</a>
+            </div>
+            <div class="session-box survey-box" id="sesion-2">
+                <a class="download-button motion-button"
+                    href="https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91"
+                    target="_blank" rel="noopener noreferrer">Visita Técnica GECELCA (encuesta)</a>
             </div>
             <div class="session-box" id="sesion-3">
-                <p class="session-highlight"><strong>Sesión 3: Ecosistema office 365 SENA</strong></p>
+                <p class="session-highlight"><strong>Sesión 2: Ecosistema office 365 SENA</strong></p>
                 <p>El ecosistema de Microsoft 365 sirve para unificar herramientas en la nube que optimizan el flujo de
                     información, el almacenamiento institucional en SharePoint y la productividad colaborativa. Por su
                     parte, los equipos en Teams se crean para centralizar la comunicación, coordinar proyectos mediante
@@ -779,7 +787,33 @@
                     style="background: linear-gradient(135deg, #5A70A6, #41527a); box-shadow: 0 6px 20px rgba(90, 112, 166, 0.22); margin-left: 8px;"
                     href="equipos.html" target="_blank" rel="noopener noreferrer">Equipos</a>
             </div>
-            <div class="session-box" id="sesion-4">
+            <div class="session-box survey-box" id="sesion-4">
+                <a class="download-button motion-button"
+                    href="https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91"
+                    target="_blank" rel="noopener noreferrer">Experiencias Tecnoglass y Globa (encuesta)</a>
+            </div>
+            <div class="session-box" id="sesion-5">
+                <p class="session-highlight"><strong>Sesión No 3: Kanban, Rúbrica y Ejercicios</strong></p>
+                <p>Las metodologías ágiles, derivadas del enfoque Lean enfocado en optimizar el valor, abarcan marcos
+                    diversos como Scrum, Kanban, ScrumBan y SAFe para mejorar la eficiencia organizacional.
+                    Específicamente, Kanban gestiona el trabajo de manera visual mediante un flujo continuo de tareas en
+                    tableros, identificando cuellos de botella para elevar la productividad. Al implementarse en
+                    Microsoft Planner, el flujo se estructura transformando los buckets en columnas de progreso y las
+                    tareas en tarjetas Kanban con responsables específicos. El avance real de cada actividad se controla
+                    a través de checklists internos, comentarios e históricos y archivos adjuntos como evidencias
+                    digitales del cumplimiento. Este seguimiento visual, centralizado en canales de Microsoft Teams,
+                    facilita una rutina ágil de supervisión basada en entregables en lugar de control de horarios.
+                    Finalmente, la calidad en la planeación y la correcta adopción del modelo se miden técnicamente
+                    mediante una rúbrica de evaluación institucional.</p>
+                <a class="download-button motion-button"
+                    href="https://prairie-dingo-760.notion.site/Kanban-Ejercicios-Planner-3720f0fb6f4a80e1ba83fafbdd16f0e6"
+                    target="_blank" rel="noopener noreferrer">Notion</a>
+                <a class="download-button motion-button"
+                    style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-left: 8px;"
+                    href="https://forms.cloud.microsoft/Pages/DesignPageV2.aspx?prevorigin=shell&origin=NeoPortalPage&subpage=design&id=gcPCyy4vk02R0VBskxas58B7ILNl_ddCoM3qf9UMMVVUNjlRSDFORDQzTjFWMFIzSkRVREtQU1hPQy4u"
+                    target="_blank" rel="noopener noreferrer">Fotos y Evidencias</a>
+            </div>
+            <div class="session-box" id="sesion-6">
                 <p class="session-highlight"><strong>Sesión 4: Microsoft Planner</strong></p>
                 <p>Para gestionar eficazmente el trabajo no presencial, se utiliza Microsoft Planner como herramienta de
                     planificación y seguimiento, permitiendo organizar tareas, asignar responsables, establecer fechas
@@ -795,10 +829,15 @@
                     target="_blank" rel="noopener noreferrer">Notion</a>
                 <a class="download-button motion-button"
                     style="background: #505F87; box-shadow: 0 6px 20px rgba(80, 95, 135, 0.22); margin-left: 8px;"
-                    href="https://sena4-my.sharepoint.com/:f:/g/personal/fguevara_sena_edu_co/IgBRUYPv0TaDToIgPtgIb6JfAU7legBG3m1bTZbjEI1v6ss?e=ybY8xg"
-                    target="_blank" rel="noopener noreferrer">Ejercicios</a>
+                    href="v2.0 PLANER EJERCICIOS.pdf" download="v2.0 PLANER EJERCICIOS.pdf" target="_blank"
+                    rel="noopener noreferrer">Ejercicios</a>
             </div>
-            <div class="session-box" id="sesion-5">
+            <div class="session-box survey-box" id="sesion-7">
+                <a class="download-button motion-button"
+                    href="https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91"
+                    target="_blank" rel="noopener noreferrer">Visita Técnica ATLANTIC QI. (encuesta)</a>
+            </div>
+            <div class="session-box" id="sesion-8">
                 <p class="session-highlight"><strong>Sesión No 5: Equipo Teams como LMS</strong></p>
                 <p><strong>La Utilidad de Teams como LMS (El Punto Medio)</strong></p>
                 <p style="margin-top: 8px;"><strong>Todo en un solo lugar:</strong> Centraliza las clases en vivo, las
@@ -822,7 +861,7 @@
                     href="https://prairie-dingo-760.notion.site/Teams-como-LMS-3720f0fb6f4a8064af16fc5a5a87178f"
                     target="_blank" rel="noopener noreferrer">Notion</a>
             </div>
-            <div class="session-box" id="sesion-6">
+            <div class="session-box" id="sesion-9">
                 <p class="session-highlight"><strong>Sesión No 6: Ejercicios Aplicados</strong></p>
                 <p>La implementación de ejercicios prácticos en Microsoft Planner bajo la metodología Kanban optimiza la
                     transición hacia el teletrabajo, trabajo híbrido y trabajo remoto al centralizar el flujo de
@@ -858,7 +897,7 @@
                 },
                 {
                     id: 'modulo3', // Sincronizado con Sesión 1
-                    label: 'Sesión 1: Modalidades',
+                    label: 'Sesión 1: Generalidades',
                     title: 'Tipos de Trabajo y Criterios Técnico-Legales',
                     body: 'Explora marcos y herramientas con videos técnicos basados en la normativa legal colombiana y manuales organizacionales institucionales.',
                     cards: [
@@ -871,23 +910,41 @@
                     ]
                 },
                 {
-                    id: 'sesion-2-data',
-                    label: 'Sesión No 2: Kanban, Rúbrica y Ejercicios',
-                    title: 'Sesión No 2: Metodología Kanban y Supervisión Ágil',
-                    body: 'Adopción del enfoque visual Lean-Kanban. Organización en columnas de progreso (Buckets), control de WIP y rúbricas institucionales.',
+                    id: 'sesion-2-nueva-data',
+                    label: 'Visita Técnica GECELCA (encuesta)',
+                    title: 'Visita Técnica GECELCA (encuesta)',
+                    body: 'Accede a la encuesta sobre la visita técnica de GECELCA.',
                     cards: [
-                        { type: 'video', label: 'Metodología Kanban y Flujos Visuales', src: 'MODALIDADES DE TRABAJO.mp4' }
+                        { type: 'download', label: 'Visita Técnica GECELCA (encuesta)', src: 'https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91' }
                     ]
                 },
                 {
-                    id: 'modulo2', // Sincronizado con Sesión 3
-                    label: 'Sesión 3: Ecosistema office 365 SENA',
-                    title: 'Ecosistema Office 365 y Creación de Equipos',
+                    id: 'modulo2', // Sincronizado con Sesión 2
+                    label: 'Sesión 2: Ecosistema office 365 SENA',
+                    title: 'Sesión 2: Ecosistema Office 365 y Creación de Equipos',
                     body: 'Aprende paso a paso el uso, aprovisionamiento e ingreso a Microsoft Teams con video interactivo y guías de soporte descargables.',
                     cards: [
                         { type: 'video', label: 'Aprovisionamiento de Teams Paso a Paso', src: '2. V2.0 PASO A PASO EQUIPO TEAMS.mp4' },
                         { type: 'image', label: 'Infografía: Secuencia Operativa Teams', src: 'PASO A PASO EQUIPO TEAMS.jpeg', download: true },
                         { type: 'download', label: 'Generador de Grupos y Equipos Aleatorios', src: 'equipos.html' }
+                    ]
+                },
+                {
+                    id: 'sesion-4-nueva-data',
+                    label: 'Experiencias Tecnoglass y Globa (encuesta)',
+                    title: 'Experiencias Tecnoglass y Globa (encuesta)',
+                    body: 'Accede a la encuesta sobre las experiencias de Tecnoglass y Globa.',
+                    cards: [
+                        { type: 'download', label: 'Experiencias Tecnoglass y Globa (encuesta)', src: 'https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91' }
+                    ]
+                },
+                {
+                    id: 'sesion-2-data',
+                    label: 'Sesión No 3: Kanban, Rúbrica y Ejercicios',
+                    title: 'Sesión No 3: Metodología Kanban y Supervisión Ágil',
+                    body: 'Adopción del enfoque visual Lean-Kanban. Organización en columnas de progreso (Buckets), control de WIP y rúbricas institucionales.',
+                    cards: [
+                        { type: 'video', label: 'Metodología Kanban y Flujos Visuales', src: 'MODALIDADES DE TRABAJO.mp4' }
                     ]
                 },
                 {
@@ -897,7 +954,17 @@
                     body: 'Manual de Microsoft Planner enfocado en la autogestión de linderos temporales, asignación por objetivos y control técnico.',
                     cards: [
                         { type: 'video', label: 'Microsoft Planner en Entornos Virtuales', src: 'MICROSOFT PLANNER.mp4' },
-                        { type: 'image', label: 'Estructura de Tareas y Control', src: 'MICROSOFT PLANNER.jpeg', download: true }
+                        { type: 'image', label: 'Estructura de Tareas y Control', src: 'MICROSOFT PLANNER.jpeg', download: true },
+                        { type: 'download', label: 'Ejercicios', src: 'v2.0 PLANER EJERCICIOS.pdf' }
+                    ]
+                },
+                {
+                    id: 'sesion-7-nueva-data',
+                    label: 'Visita Técnica ATLANTIC QI. (encuesta)',
+                    title: 'Visita Técnica ATLANTIC QI. (encuesta)',
+                    body: 'Accede a la encuesta sobre la visita técnica a ATLANTIC QI.',
+                    cards: [
+                        { type: 'download', label: 'Visita Técnica ATLANTIC QI. (encuesta)', src: 'https://prairie-dingo-760.notion.site/Trabajo-Colaborativo-y-Coautoria-9e50f0fb6f4a831a86e5819932271a91' }
                     ]
                 },
                 {
