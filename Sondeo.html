@@ -838,6 +838,13 @@
             }
         }
 
+        // Agregar la opción E "No tengo idea, gracias" a todas las preguntas
+        for (let i = 1; i <= 10; i++) {
+            bancoPreguntasCompleto[i].forEach(pregunta => {
+                pregunta.opciones.E = "No tengo idea, gracias";
+            });
+        }
+
         let preguntasSeleccionadasGlobal = [];
 
         function inicializarSondeoAleatorio() {
